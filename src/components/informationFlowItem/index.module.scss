@@ -1,3 +1,54 @@
 .container {
-    color: red;
+  padding: 12px 0;
+  display: flex;
+  box-sizing: content-box;
+  border-bottom: 1px solid #f7f0f0;
+
+  .textContent {
+    width: 215px;
+
+    .main {
+      word-wrap: break-word;
+      margin-bottom: 12px;
+      color: #414143;
+      font-size: 16px;
+    }
+
+    .subordination {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      color: #969799;
+      font-size: 12px;
+      span:nth-child(1) {
+        margin-right: 8px;
+      }
+
+      .iconContainer {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 20px;
+        height: 15px;
+        border-radius: 20px / 15px; /* 椭圆形的半径，水平半径大于垂直半径 */
+        background-color: #f6f6f6;
+
+        .icon {
+          width: 8px;
+          height: 8px;
+          fill: white;
+        }
+      }
+    }
+  }
+
+  .singlePicture {
+    margin-left: 10px;
+    flex: 1;
+    :global {
+      .adm-image {
+        height: 80px;
+      }
+    }
+  }
 }

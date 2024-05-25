@@ -1,0 +1,10 @@
+.swipeableContainer {
+  overflow: auto;
+  -webkit-overflow-scrolling: touch; /* 为iOS设备提供平滑滚动 */
+  touch-action: pan-y; /* 允许垂直滑动 */
+  scrollbar-width: none; /* Firefox */
+  &::-webkit-scrollbar {
+    display: none; /* Chrome, Safari, Opera */
+  }
+  height: 100vh;
+}

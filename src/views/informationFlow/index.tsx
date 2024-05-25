@@ -1,8 +1,9 @@
 import InformationFlowList from "../../components/informationFlowList"
+import styles from "./index.module.scss"
 
-const InformationFlow=()=>{
+const InformationFlow = () => {
 
-    return <InformationFlowList/>
+    return <div className={styles.swipeableContainer}> <InformationFlowList /></div>
 }
 
 export default InformationFlow
