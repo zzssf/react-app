@@ -120,6 +120,7 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
             rows={3}
             content={content || ""}
             expandText="展开"
+            collapseText="收起"
           />
         </div>
         {renderOtherInformation}
