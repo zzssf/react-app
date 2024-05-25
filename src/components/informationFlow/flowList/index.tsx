@@ -31,8 +31,8 @@ const InformationFlowList = () => {
 
   return (
     <div className={styles.container}>
-      {data.map((item) => (
-        <SinglePictureItem {...item} />
+      {data.map((item,key) => (
+        <SinglePictureItem {...item} key={key} />
       ))}
     </div>
   );

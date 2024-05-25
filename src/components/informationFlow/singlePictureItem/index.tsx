@@ -18,7 +18,13 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
 }) => {
   return (
     <div className={styles.container}>
-      <div className={styles.textContent}>
+      <div
+        className={
+          image
+            ? styles.textContent
+            : [styles.textContent,styles.noPicture].join(" ")
+        }
+      >
         <div className={styles.main}>
           <Ellipsis
             direction="end"
@@ -37,9 +43,11 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
           </div>
         </div>
       </div>
-      <div className={styles.singlePicture}>
-        <Image lazy src={image || ""} />
-      </div>
+      {image && (
+        <div className={styles.singlePicture}>
+          <Image lazy src={image || ""} />
+        </div>
+      )}
     </div>
   );
 };
