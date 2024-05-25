@@ -1,6 +1,8 @@
+import InformationFlowList from "../../components/informationFlowList"
+
 const InformationFlow=()=>{
 
-    return<>test</>
+    return <InformationFlowList/>
 }
 
 export default InformationFlow
