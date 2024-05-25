@@ -1,4 +1,4 @@
-import InformationFlowItem from "../informationFlowItem";
+import SinglePictureItem from "../singlePictureItem";
 import styles from "./index.module.scss";
 
 const InformationFlowList = () => {
@@ -32,7 +32,7 @@ const InformationFlowList = () => {
   return (
     <div className={styles.container}>
       {data.map((item) => (
-        <InformationFlowItem {...item} />
+        <SinglePictureItem {...item} />
       ))}
     </div>
   );

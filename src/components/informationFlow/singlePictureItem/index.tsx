@@ -3,14 +3,14 @@ import { CloseOutline } from "antd-mobile-icons";
 import { Ellipsis, Image } from "antd-mobile";
 import React from "react";
 
-interface InformationFlowItemType {
+interface ISinglePictureItemType {
   content?: string;
   commentInfo?: string;
   author?: string;
   image?: string;
 }
 
-const InformationFlowItem: React.FC<InformationFlowItemType> = ({
+const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
   content,
   commentInfo,
   author,
@@ -44,4 +44,4 @@ const InformationFlowItem: React.FC<InformationFlowItemType> = ({
   );
 };
 
-export default InformationFlowItem;
+export default SinglePictureItem;
