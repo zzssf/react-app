@@ -73,6 +73,17 @@
     }
   }
 
+  .videoContainer{
+    display: flex;
+    flex-direction: column;
+    .videoStyle{
+      margin-bottom: 12px;
+    }
+    .otherInformation {
+      @include commonInformation();
+    }
+  }
+
   .setRightMargin {
     margin-left: 0px;
     margin-right: 10px;
@@ -87,5 +98,8 @@
   flex-direction: row-reverse;
 }
 .setImageBottomPosition {
+  flex-direction: column;
+}
+.setVideoBottomPosition {
   flex-direction: column;
 }

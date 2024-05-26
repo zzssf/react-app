@@ -11,6 +11,7 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
   author,
   image = [],
   imagePosition,
+  video,
 }) => {
   const relativeInformation = useMemo(() => {
     return (
@@ -31,7 +32,7 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
       return;
     }
 
-    if (image.length === 0) {
+    if (image.length === 0 && !video) {
       return;
     }
 
@@ -69,13 +70,25 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
           {relativeInformation}
         </div>,
       ],
+      [
+        EImagePosition.videoBottom,
+        <div className={styles.videoContainer}>
+          <video controls className={styles.videoStyle}>
+            <source src={video} type="video/mp4"></source>
+          </video>
+          {relativeInformation}
+        </div>,
+      ],
     ]);
 
     return pictureMaps.get(imagePosition);
-  }, [imagePosition, image, relativeInformation]);
+  }, [imagePosition, image, relativeInformation, video]);
 
   const renderOtherInformation = useMemo(() => {
-    if (imagePosition === EImagePosition.bottom) {
+    if (
+      imagePosition === EImagePosition.bottom ||
+      imagePosition === EImagePosition.videoBottom
+    ) {
       return;
     }
 
@@ -95,6 +108,10 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
       [
         EImagePosition.bottom,
         [styles.setImageBottomPosition, styles.container].join(" "),
+      ],
+      [
+        EImagePosition.videoBottom,
+        [styles.setVideoBottomPosition, styles.container].join(" "),
       ],
     ]);
 
