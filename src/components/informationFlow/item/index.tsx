@@ -5,7 +5,7 @@ import React, { useMemo } from "react";
 import { ItemType } from "../../../type/informationFlow";
 import { EImagePosition } from "../../../type/enum";
 
-const Item: React.FC<ItemType> = ({
+const Item: React.FC<ItemType & { index: number }> = ({
   content,
   commentInfo,
   author,

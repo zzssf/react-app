@@ -78,6 +78,7 @@
     flex-direction: column;
     .videoStyle{
       margin-bottom: 12px;
+      width: 100%;
     }
     .otherInformation {
       @include commonInformation();
