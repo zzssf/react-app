@@ -2,10 +2,10 @@ import styles from "./index.module.scss";
 import { CloseOutline } from "antd-mobile-icons";
 import { Ellipsis, Image } from "antd-mobile";
 import React, { useMemo } from "react";
-import { ISinglePictureItemType } from "../../../type/informationFlow";
+import { ItemType } from "../../../type/informationFlow";
 import { EImagePosition } from "../../../type/enum";
 
-const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
+const Item: React.FC<ItemType> = ({
   content,
   commentInfo,
   author,
@@ -147,4 +147,4 @@ const SinglePictureItem: React.FC<ISinglePictureItemType> = ({
   );
 };
 
-export default SinglePictureItem;
+export default Item;

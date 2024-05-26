@@ -1,9 +1,12 @@
-import InformationFlowList from "../../components/informationFlow/flowList"
-import styles from "./index.module.scss"
+import FlowList from "../../components/informationFlow/list";
+import styles from "./index.module.scss";
 
 const InformationFlow = () => {
+  return (
+    <div className={styles.swipeableContainer}>
+      <FlowList />
+    </div>
+  );
+};
 
-    return <div className={styles.swipeableContainer}> <InformationFlowList /></div>
-}
-
-export default InformationFlow
+export default InformationFlow;

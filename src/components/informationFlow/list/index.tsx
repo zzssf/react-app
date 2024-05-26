@@ -1,11 +1,11 @@
 import { EImagePosition } from "../../../type/enum";
-import { ISinglePictureItemType } from "../../../type/informationFlow";
-import SinglePictureItem from "../singlePictureItem";
+import { ItemType } from "../../../type/informationFlow";
+import Item from "../item";
 import styles from "./index.module.scss";
 
-const InformationFlowList = () => {
+const List = () => {
   //TODO:待修改
-  const data: ISinglePictureItemType[] = [
+  const data: ItemType[] = [
     {
       content:
         "一旦我国武统台湾,美将 打击中方核武库和火箭军, 美司令嚣张至极 一旦我国武统台湾,美将 打击中方核武库和火箭军, 美司令嚣张至极 一旦我国武统台湾,美将 打击中方核武库和火箭军, 美司令嚣张至极",
@@ -62,17 +62,17 @@ const InformationFlowList = () => {
       commentInfo: "50评",
       author: "小易寒",
       video: "https://www.runoob.com/try/demo_source/mov_bbb.mp4",
-      imagePosition:EImagePosition.videoBottom
+      imagePosition: EImagePosition.videoBottom,
     },
   ];
 
   return (
     <div className={styles.container}>
       {data.map((item, key) => (
-        <SinglePictureItem {...item} key={key} />
+        <Item {...item} key={key} />
       ))}
     </div>
   );
 };
 
-export default InformationFlowList;
+export default List;
