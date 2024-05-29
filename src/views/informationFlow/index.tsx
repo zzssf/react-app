@@ -1,4 +1,4 @@
-import FlowList from "../../components/informationFlow/list";
+import FlowList from "../../components/informationFlow/testVirtualScroll";
 import styles from "./index.module.scss";
 
 const InformationFlow = () => {
