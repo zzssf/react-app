@@ -1,1 +1,1 @@
-export const DEFAULT_HEIGHT=200
+export const DEFAULT_HEIGHT=124.8

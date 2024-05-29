@@ -1,31 +1,32 @@
-import { VariableSizeList as List } from "react-window";
+import { VariableSizeList as List, VariableSizeList } from "react-window";
 import AutoSizer, { Size } from "react-virtualized-auto-sizer";
-import React from "react";
+import React, { useRef } from "react";
 import { useInformationFlowContext } from "../../../context/informationFlowContext";
 import Row from "../row";
 import { DEFAULT_HEIGHT } from "../../../type/constant";
 
 const VirtualScroll: React.FC = () => {
-  const { sizes } = useInformationFlowContext();
+  const { sizesRef } = useInformationFlowContext();
+  const listRef = useRef<VariableSizeList>(null);
 
   const getHeight = (index: number) => {
-    console.log(index);
-    console.log(sizes?.[index], "sizes?.[index]", index);
-
-    return sizes?.[index] || DEFAULT_HEIGHT;
+    return sizesRef?.current?.[index] || DEFAULT_HEIGHT;
   };
 
   return (
     <AutoSizer>
       {({ height, width }: Size) => (
         <List
+          ref={listRef}
           className="List"
           height={height}
           itemCount={6}
           itemSize={getHeight}
           width={width}
         >
-          {Row}
+          {({ index, style }) => (
+            <Row index={index} style={style} listRef={listRef} />
+          )}
         </List>
       )}
     </AutoSizer>

@@ -3,10 +3,12 @@ import { useInformationFlowContext } from "../../../context/informationFlowConte
 import Item from "../item";
 import { EImagePosition } from "../../../type/enum";
 import { ItemType } from "../../../type/informationFlow";
+import { VariableSizeList } from "react-window";
 
 interface RowProps {
   index: number;
   style: React.CSSProperties;
+  listRef:React.RefObject<VariableSizeList<any>>
 }
 //TODO:待修改
 const data: ItemType[] = [
@@ -70,23 +72,21 @@ const data: ItemType[] = [
   },
 ];
 
-const Row = ({ index, style }: RowProps) => {
+const Row = ({ index, style,listRef }: RowProps) => {
   const rowRef = useRef<HTMLDivElement>(null);
-  const { setSizes } = useInformationFlowContext();
+  const { sizesRef} = useInformationFlowContext();
 
   useEffect(() => {
     if (!rowRef.current) {
       return;
     }
     const rowHeight = rowRef.current.getBoundingClientRect().height;
-    setSizes((prevSizes) => ({
-      ...prevSizes,
-      [index]: rowHeight,
-    }));
-  }, []);
+    
+    sizesRef.current[index]= rowHeight
+  }, [index]);
 
   return (
-    <div ref={rowRef} style={style}>
+    <div ref={rowRef} style={{...style,height:sizesRef.current[index]}} >
       <Item {...data[index]} index={index} />
     </div>
   );
