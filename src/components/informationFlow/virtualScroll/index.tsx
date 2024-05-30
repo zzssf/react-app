@@ -1,36 +1,65 @@
-import { VariableSizeList as List, VariableSizeList } from "react-window";
-import AutoSizer, { Size } from "react-virtualized-auto-sizer";
-import React, { useRef } from "react";
-import { useInformationFlowContext } from "../../../context/informationFlowContext";
-import Row from "../row";
-import { DEFAULT_HEIGHT } from "../../../type/constant";
+import { useEffect, useRef } from "react";
+import { VariableSizeList, VariableSizeListRef } from "../variableSizeList";
+import ItemRender from "../item";
+import { DEFAULT_HEIGHT } from "src/type/constant";
 
-const VirtualScroll: React.FC = () => {
-  const { sizesRef } = useInformationFlowContext();
-  const listRef = useRef<VariableSizeList>(null);
+// 列表项组件的类型声明
+interface ItemProps<T> {
+  index: number;
+  data: T[];
+  setHeight: (index: number, height: number) => void;
+}
 
-  const getHeight = (index: number) => {
-    return sizesRef?.current?.[index] || DEFAULT_HEIGHT;
-  };
+// 列表项组件
+const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
+  const itemRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (itemRef.current) {
+      setHeight(index, itemRef.current.getBoundingClientRect().height);
+    }
+
+    console.log({ ...data[index] });
+  }, [index]);
 
   return (
-    <AutoSizer>
-      {({ height, width }: Size) => (
-        <List
-          ref={listRef}
-          className="List"
-          height={height}
-          itemCount={6}
-          itemSize={getHeight}
-          width={width}
-        >
-          {({ index, style }) => (
-            <Row index={index} style={style} listRef={listRef} />
-          )}
-        </List>
-      )}
-    </AutoSizer>
+    <div ref={itemRef}>
+      <ItemRender {...data[index]} index={index} />
+    </div>
   );
 };
 
-export default VirtualScroll;
+export const VirtualScroll = <T,>(props: { data: T[] }) => {
+  const { data } = props;
+  const listRef = useRef<VariableSizeListRef>(null);
+  const heightsRef = useRef<number[]>([]);
+
+  const getHeight = (index: number): number => {
+    return heightsRef.current[index] || DEFAULT_HEIGHT;
+  };
+
+  const setHeight = (index: number, height: number) => {
+    if (heightsRef.current[index] !== height) {
+      heightsRef.current[index] = height;
+      listRef.current?.resetHeight();
+    }
+  };
+
+  return (
+    <>
+      <VariableSizeList
+        ref={listRef}
+        containerHeight={884}
+        itemCount={data.length}
+        getItemHeight={getHeight}
+        itemData={data}
+      >
+        {({ index, style, data }) => (
+          <div style={style}>
+            <Item {...{ index, data, setHeight }} />
+          </div>
+        )}
+      </VariableSizeList>
+    </>
+  );
+};

@@ -1,11 +1,11 @@
-import FlowList from "../../components/informationFlow/testVirtualScroll";
-import styles from "./index.module.scss";
+import FlowList from "../../components/informationFlow/list";
+import { InformationFlowContext } from "../../context/informationFlowContext";
 
 const InformationFlow = () => {
   return (
-    <div className={styles.swipeableContainer}>
+    <InformationFlowContext>
       <FlowList />
-    </div>
+    </InformationFlowContext>
   );
 };
 
