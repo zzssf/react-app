@@ -26,7 +26,9 @@
     "start": "react-scripts start --proxy-setup ./src/setupProxy.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "lint": "eslint --ext .tsx,.js,.ts src",
+    "lint-fix": "eslint --fix  --ext .tsx,.js,.ts src"
   },
   "eslintConfig": {
     "extends": [
@@ -48,6 +50,11 @@
   },
   "devDependencies": {
     "@faker-js/faker": "^8.4.1",
+    "@typescript-eslint/eslint-plugin": "5.54.0",
+    "@typescript-eslint/parser": "5.54.0",
+    "eslint": "8.35.0",
+    "eslint-plugin-react": "7.32.2",
+    "eslint-plugin-react-hooks": "4.6.0",
     "http-proxy-middleware": "^3.0.0",
     "sass": "^1.77.2",
     "sass-loader": "^14.2.1"
