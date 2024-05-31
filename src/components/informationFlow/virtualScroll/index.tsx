@@ -1,8 +1,8 @@
-import { useEffect, useRef } from "react";
-import { VariableSizeList, VariableSizeListRef } from "../variableSizeList";
-import ItemRender from "../item";
-import { DEFAULT_HEIGHT } from "src/type/constant";
-import { ItemType } from "src/type/informationFlow";
+import { useEffect, useRef } from 'react'
+import { VariableSizeList, VariableSizeListRef } from '../variableSizeList'
+import ItemRender from '../item'
+import { DEFAULT_HEIGHT } from 'src/type/constant'
+import { ItemType } from 'src/type/informationFlow'
 
 // 列表项组件的类型声明
 interface ItemProps<T> {
@@ -13,40 +13,40 @@ interface ItemProps<T> {
 
 // 列表项组件
 const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
-  const itemRef = useRef<HTMLDivElement>(null);
+  const itemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
     if (itemRef.current) {
-      setHeight(index, itemRef.current.getBoundingClientRect().height);
+      setHeight(index, itemRef.current.getBoundingClientRect().height)
     }
-  }, [index]);
+  }, [index])
 
   return (
     <div ref={itemRef}>
       <ItemRender {...data[index] as ItemType}/>
     </div>
-  );
-};
+  )
+}
 
 export const VirtualScroll = <T,>(props: {
   data: T[];
   pullUp?: () => Promise<void>;
   pullDown?: () => Promise<void>;
 }) => {
-  const { data, pullUp, pullDown } = props;
-  const listRef = useRef<VariableSizeListRef>(null);
-  const heightsRef = useRef<number[]>([]);
+  const { data, pullUp, pullDown } = props
+  const listRef = useRef<VariableSizeListRef>(null)
+  const heightsRef = useRef<number[]>([])
 
   const getHeight = (index: number): number => {
-    return heightsRef.current[index] || DEFAULT_HEIGHT;
-  };
+    return heightsRef.current[index] || DEFAULT_HEIGHT
+  }
 
   const setHeight = (index: number, height: number) => {
     if (heightsRef.current[index] !== height) {
-      heightsRef.current[index] = height;
-      listRef.current?.resetHeight();
+      heightsRef.current[index] = height
+      listRef.current?.resetHeight()
     }
-  };
+  }
 
   return (
     <>
@@ -65,5 +65,5 @@ export const VirtualScroll = <T,>(props: {
         )}
       </VariableSizeList>
     </>
-  );
-};
+  )
+}

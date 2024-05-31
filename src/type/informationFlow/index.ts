@@ -1,4 +1,4 @@
-import { EFileType } from "../enum";
+import { EFileType } from '../enum'
 
 export interface ItemType {
   content: string;

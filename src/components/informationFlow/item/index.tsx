@@ -1,9 +1,9 @@
-import styles from "./index.module.scss";
-import { CloseOutline } from "antd-mobile-icons";
-import { Ellipsis, Image } from "antd-mobile";
-import React, { useMemo } from "react";
-import { ItemType } from "../../../type/informationFlow";
-import { EFileType } from "../../../type/enum";
+import styles from './index.module.scss'
+import { CloseOutline } from 'antd-mobile-icons'
+import { Ellipsis, Image } from 'antd-mobile'
+import React, { useMemo } from 'react'
+import { ItemType } from '../../../type/informationFlow'
+import { EFileType } from '../../../type/enum'
 
 const Item: React.FC<ItemType> = ({
   content,
@@ -24,8 +24,8 @@ const Item: React.FC<ItemType> = ({
           <CloseOutline className={styles.icon} />
         </div>
       </div>
-    );
-  }, [author, comment]);
+    )
+  }, [author, comment])
 
   const renderPicture = useMemo(() => {
     const pictureMaps = new Map<EFileType, JSX.Element>([
@@ -35,15 +35,15 @@ const Item: React.FC<ItemType> = ({
           <div className={styles.singleContainer}>
             <Image
               lazy
-              src={image?.[0] || ""}
-              className={[styles.singlePicture, styles.setRightMargin].join(" ")}
+              src={image?.[0] || ''}
+              className={[styles.singlePicture, styles.setRightMargin].join(' ')}
             />
             <div className={styles.content}>
               <Ellipsis
                 className={styles.main}
                 direction="end"
                 rows={3}
-                content={content || ""}
+                content={content || ''}
                 expandText="展开"
                 collapseText="收起"
               />
@@ -54,11 +54,11 @@ const Item: React.FC<ItemType> = ({
       ],
       [
         EFileType.MULTI_PICTURE,
-        <div className={styles.multiPicture}>
+        <div className={styles.multiPicture} key={fileType}>
           <div className={styles.pictures}>
             {image?.map((imageUrl, key) => (
               <Image
-                src={imageUrl || ""}
+                src={imageUrl || ''}
                 key={key}
                 className={styles.imageStyle}
               />
@@ -70,38 +70,38 @@ const Item: React.FC<ItemType> = ({
       ],
       [
         EFileType.SINGLE_VIDEO,
-        <div className={styles.videoContainer}>
+        <div className={styles.videoContainer} key={fileType}>
           <video controls className={styles.videoStyle}>
-            <source src={video || ""} type="video/mp4"></source>
+            <source src={video || ''} type="video/mp4"></source>
           </video>
           {relativeInformation}
         </div>,
       ],
       [EFileType.IS_ONLY_TEXT, relativeInformation],
-    ]);
+    ])
 
-    return pictureMaps.get(fileType);
-  }, [fileType, image, relativeInformation, video,content]);
+    return pictureMaps.get(fileType)
+  }, [fileType, image, relativeInformation, video,content])
 
   const containerStyle = useMemo(() => {
     const containerStylesMap = new Map([
-      [EFileType.SINGLE_PICTURE, [styles.container].join(" ")],
+      [EFileType.SINGLE_PICTURE, [styles.container].join(' ')],
       [
         EFileType.MULTI_PICTURE,
-        [styles.setMultiPicture, styles.container].join(" "),
+        [styles.setMultiPicture, styles.container].join(' '),
       ],
       [
         EFileType.SINGLE_VIDEO,
-        [styles.setSingleVideo, styles.container].join(" "),
+        [styles.setSingleVideo, styles.container].join(' '),
       ],
       [
         EFileType.IS_ONLY_TEXT,
-        [styles.setOnlyText, styles.container].join(" "),
+        [styles.setOnlyText, styles.container].join(' '),
       ],
-    ]);
+    ])
 
-    return containerStylesMap.get(fileType);
-  }, [fileType]);
+    return containerStylesMap.get(fileType)
+  }, [fileType])
 
   return (
     <div className={containerStyle}>
@@ -110,14 +110,14 @@ const Item: React.FC<ItemType> = ({
           className={styles.main}
           direction="end"
           rows={3}
-          content={content || ""}
+          content={content || ''}
           expandText="展开"
           collapseText="收起"
         />
       )}
       {renderPicture}
     </div>
-  );
-};
+  )
+}
 
-export default Item;
+export default Item

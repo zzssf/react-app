@@ -3,11 +3,11 @@ import React, {
   useImperativeHandle,
   forwardRef,
   useMemo,
-} from "react";
-import { flushSync } from "react-dom";
-import { findFirstGreaterThan } from "../../../utils";
-import { BOUNDARY_QUANTITY } from "src/type/constant";
-import InfiniteScroll from "react-infinite-scroll-component";
+} from 'react'
+import { flushSync } from 'react-dom'
+import { findFirstGreaterThan } from '../../../utils'
+import { BOUNDARY_QUANTITY } from 'src/type/constant'
+import InfiniteScroll from 'react-infinite-scroll-component'
 
 // ListItem 组件的 props 类型声明
 interface ListItemProps<T> {
@@ -46,62 +46,62 @@ export const VariableSizeList = forwardRef(
       children,
       pullUp,
       pullDown,
-    } = props;
+    } = props
 
     useImperativeHandle(
       ref,
       () => {
         return {
           resetHeight: () => {
-            setOffsets(genOffsets());
+            setOffsets(genOffsets())
           },
-        };
+        }
       },
       []
-    );
+    )
 
-    const Component = children as React.FunctionComponent<ListItemProps<T>>;
-    const [scrollTop, setScrollTop] = useState(0); // 滚动高度
+    const Component = children as React.FunctionComponent<ListItemProps<T>>
+    const [scrollTop, setScrollTop] = useState(0) // 滚动高度
 
     const genOffsets = () => {
-      const heightArray: number[] = [];
-      heightArray[0] = getItemHeight(0);
+      const heightArray: number[] = []
+      heightArray[0] = getItemHeight(0)
       for (let i = 1; i < itemCount; i++) {
-        heightArray[i] = getItemHeight(i) + heightArray[i - 1];
+        heightArray[i] = getItemHeight(i) + heightArray[i - 1]
       }
-      return heightArray;
-    };
+      return heightArray
+    }
 
-    const [offsets, setOffsets] = useState(genOffsets);
+    const [offsets, setOffsets] = useState(genOffsets)
     let startIdx = useMemo(
       () => findFirstGreaterThan(offsets, scrollTop),
       [offsets, scrollTop]
-    );
+    )
     let endIdx = useMemo(
       () => findFirstGreaterThan(offsets, scrollTop + containerHeight),
       [offsets, scrollTop, containerHeight]
-    );
-    if (endIdx === -1) endIdx = itemCount;
+    )
+    if (endIdx === -1) endIdx = itemCount
 
     startIdx = useMemo(
       () => Math.max(startIdx - BOUNDARY_QUANTITY, 0),
       [startIdx]
-    );
+    )
     endIdx = useMemo(
       () => Math.min(endIdx + BOUNDARY_QUANTITY, itemCount - 1),
       [endIdx, itemCount]
-    );
+    )
 
-    const contentHeight = offsets[offsets.length - 1];
+    const contentHeight = offsets[offsets.length - 1]
 
     const itemRender = useMemo(() => {
-      const items = [];
+      const items = []
       for (let offsetIndex = startIdx; offsetIndex <= endIdx; offsetIndex++) {
-        const top = offsetIndex === 0 ? 0 : offsets[offsetIndex - 1];
+        const top = offsetIndex === 0 ? 0 : offsets[offsetIndex - 1]
         const height =
           offsetIndex === 0
             ? offsets[0]
-            : offsets[offsetIndex] - offsets[offsetIndex - 1];
+            : offsets[offsetIndex] - offsets[offsetIndex - 1]
 
         items.push(
           <Component
@@ -109,39 +109,39 @@ export const VariableSizeList = forwardRef(
             index={offsetIndex}
             data={itemData}
             style={{
-              position: "absolute",
+              position: 'absolute',
               left: 0,
               top,
-              width: "100%",
+              width: '100%',
               height,
             }}
           />
-        );
+        )
       }
-      return items;
-    }, [startIdx, endIdx, itemData, offsets, Component]);
+      return items
+    }, [startIdx, endIdx, itemData, offsets, Component])
 
     return (
       <div
         style={{
           height: containerHeight,
-          overflow: "auto",
-          position: "relative",
+          overflow: 'auto',
+          position: 'relative',
         }}
         id="scrollableDiv"
         onScroll={(e) => {
           flushSync(() => {
-            setScrollTop((e.target as HTMLDivElement).scrollTop);
-          });
+            setScrollTop((e.target as HTMLDivElement).scrollTop)
+          })
         }}
       >
         <InfiniteScroll
           dataLength={itemData.length}
           next={() =>pullUp?.()}
           hasMore={true}
-          loader={<h3 style={{ textAlign: "center" }}>Loading...</h3>}
+          loader={<h3 style={{ textAlign: 'center' }}>Loading...</h3>}
           endMessage={
-            <p style={{ textAlign: "center" }}>
+            <p style={{ textAlign: 'center' }}>
               <b>Yay! You have seen it all</b>
             </p>
           }
@@ -149,18 +149,20 @@ export const VariableSizeList = forwardRef(
           pullDownToRefresh
           pullDownToRefreshThreshold={50}
           pullDownToRefreshContent={
-            <h3 style={{ textAlign: "center" }}>
+            <h3 style={{ textAlign: 'center' }}>
               &#8595; Pull down to refresh
             </h3>
           }
           releaseToRefreshContent={
-            <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+            <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
           }
           scrollableTarget="scrollableDiv"
         >
           <div style={{ height: contentHeight }}>{itemRender}</div>
         </InfiniteScroll>
       </div>
-    );
+    )
   }
-);
+)
+
+VariableSizeList.displayName='VariableSizeList'

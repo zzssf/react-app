@@ -1,10 +1,10 @@
-import InformationFlow from "./views/informationFlow";
+import InformationFlow from './views/informationFlow'
 import './App.css'
 
-function App() {
+function App () {
   return (
     <InformationFlow/>
-  );
+  )
 }
 
-export default App;
+export default App
