@@ -3,14 +3,14 @@ import { CloseOutline } from "antd-mobile-icons";
 import { Ellipsis, Image } from "antd-mobile";
 import React, { useMemo } from "react";
 import { ItemType } from "../../../type/informationFlow";
-import { EImagePosition } from "../../../type/enum";
+import { EFileType } from "../../../type/enum";
 
-const Item: React.FC<ItemType & { index: number }> = ({
+const Item: React.FC<ItemType> = ({
   content,
-  commentInfo,
+  comment,
   author,
   image = [],
-  imagePosition,
+  fileType,
   video,
 }) => {
   const relativeInformation = useMemo(() => {
@@ -18,130 +18,103 @@ const Item: React.FC<ItemType & { index: number }> = ({
       <div className={styles.otherInformation}>
         <div>
           <span>{author}</span>
-          <span> {commentInfo}</span>
+          <span> {comment}</span>
         </div>
         <div className={styles.iconContainer}>
           <CloseOutline className={styles.icon} />
         </div>
       </div>
     );
-  }, [author, commentInfo]);
+  }, [author, comment]);
 
   const renderPicture = useMemo(() => {
-    if (!imagePosition) {
-      return;
-    }
-
-    if (image.length === 0 && !video) {
-      return;
-    }
-
-    const renderImage = <Image lazy src={image[0] || ""} />;
-    const pictureMaps = new Map<EImagePosition, JSX.Element>([
+    const pictureMaps = new Map<EFileType, JSX.Element>([
       [
-        EImagePosition.left,
-        <div
-          className={
-            imagePosition === EImagePosition.left
-              ? [styles.singlePicture, styles.setRightMargin].join(" ")
-              : styles.singlePicture
-          }
-        >
-          {renderImage}
-        </div>,
+        EFileType.SINGLE_PICTURE,
+        <>
+          <div className={styles.singleContainer}>
+            <Image
+              lazy
+              src={image?.[0] || ""}
+              className={[styles.singlePicture, styles.setRightMargin].join(" ")}
+            />
+            <div className={styles.content}>
+              <Ellipsis
+                className={styles.main}
+                direction="end"
+                rows={3}
+                content={content || ""}
+                expandText="展开"
+                collapseText="收起"
+              />
+              {relativeInformation}
+            </div>
+          </div>
+        </>,
       ],
       [
-        EImagePosition.right,
-        <div className={styles.singlePicture}>{renderImage}</div>,
-      ],
-      [
-        EImagePosition.bottom,
+        EFileType.MULTI_PICTURE,
         <div className={styles.multiPicture}>
           <div className={styles.pictures}>
-            {image.map((imageUrl, key) => (
+            {image?.map((imageUrl, key) => (
               <Image
                 src={imageUrl || ""}
                 key={key}
                 className={styles.imageStyle}
               />
             ))}
-            {image.length === 2 && <div className={styles.placeholder} />}
+            {image?.length === 2 && <div className={styles.placeholder} />}
           </div>
           {relativeInformation}
         </div>,
       ],
       [
-        EImagePosition.videoBottom,
+        EFileType.SINGLE_VIDEO,
         <div className={styles.videoContainer}>
           <video controls className={styles.videoStyle}>
-            <source src={video} type="video/mp4"></source>
+            <source src={video || ""} type="video/mp4"></source>
           </video>
           {relativeInformation}
         </div>,
       ],
+      [EFileType.IS_ONLY_TEXT, relativeInformation],
     ]);
 
-    return pictureMaps.get(imagePosition);
-  }, [imagePosition, image, relativeInformation, video]);
-
-  const renderOtherInformation = useMemo(() => {
-    if (
-      imagePosition === EImagePosition.bottom ||
-      imagePosition === EImagePosition.videoBottom
-    ) {
-      return;
-    }
-
-    return relativeInformation;
-  }, [imagePosition, relativeInformation]);
+    return pictureMaps.get(fileType);
+  }, [fileType, image, relativeInformation, video,content]);
 
   const containerStyle = useMemo(() => {
-    if (!imagePosition) {
-      return styles.container;
-    }
-
     const containerStylesMap = new Map([
+      [EFileType.SINGLE_PICTURE, [styles.container].join(" ")],
       [
-        EImagePosition.left,
-        [styles.setImageLeftPosition, styles.container].join(" "),
+        EFileType.MULTI_PICTURE,
+        [styles.setMultiPicture, styles.container].join(" "),
       ],
       [
-        EImagePosition.bottom,
-        [styles.setImageBottomPosition, styles.container].join(" "),
+        EFileType.SINGLE_VIDEO,
+        [styles.setSingleVideo, styles.container].join(" "),
       ],
       [
-        EImagePosition.videoBottom,
-        [styles.setVideoBottomPosition, styles.container].join(" "),
+        EFileType.IS_ONLY_TEXT,
+        [styles.setOnlyText, styles.container].join(" "),
       ],
     ]);
 
-    if (!containerStylesMap.has(imagePosition)) {
-      return styles.container;
-    }
-
-    return containerStylesMap.get(imagePosition);
-  }, [imagePosition]);
+    return containerStylesMap.get(fileType);
+  }, [fileType]);
 
   return (
     <div className={containerStyle}>
-      <div
-        className={
-          image.length === 1
-            ? styles.textContent
-            : [styles.textContent, styles.noPicture].join(" ")
-        }
-      >
-        <div className={styles.main}>
-          <Ellipsis
-            direction="end"
-            rows={3}
-            content={content || ""}
-            expandText="展开"
-            collapseText="收起"
-          />
-        </div>
-        {renderOtherInformation}
-      </div>
+      {EFileType.SINGLE_PICTURE !== fileType && (
+        <Ellipsis
+          className={styles.main}
+          direction="end"
+          rows={3}
+          content={content || ""}
+          expandText="展开"
+          collapseText="收起"
+        />
+      )}
       {renderPicture}
     </div>
   );

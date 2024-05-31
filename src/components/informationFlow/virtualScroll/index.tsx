@@ -2,6 +2,7 @@ import { useEffect, useRef } from "react";
 import { VariableSizeList, VariableSizeListRef } from "../variableSizeList";
 import ItemRender from "../item";
 import { DEFAULT_HEIGHT } from "src/type/constant";
+import { ItemType } from "src/type/informationFlow";
 
 // 列表项组件的类型声明
 interface ItemProps<T> {
@@ -22,7 +23,7 @@ const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
 
   return (
     <div ref={itemRef}>
-      <ItemRender {...data[index]} index={index} />
+      <ItemRender {...data[index] as ItemType}/>
     </div>
   );
 };

@@ -1,6 +1,6 @@
-export enum EImagePosition {
-  "left" = "left",
-  "right" = "right",
-  "bottom" = "bottom",
-  "videoBottom"="videoBottom"
+export enum EFileType {
+ SINGLE_PICTURE,
+ MULTI_PICTURE,
+ SINGLE_VIDEO,
+ IS_ONLY_TEXT
 }

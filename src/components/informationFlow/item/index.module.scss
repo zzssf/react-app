@@ -31,26 +31,26 @@
   box-sizing: content-box;
   border-bottom: 1px solid #f7f0f0;
 
-  .textContent {
-    width: 215px;
-
-    .main {
-      word-wrap: break-word;
-      margin-bottom: 12px;
-      color: #414143;
-      font-size: 16px;
-    }
-
-    .otherInformation {
-      @include commonInformation();
-    }
+  .main {
+    width: 100%;
+    word-wrap: break-word;
+    margin-bottom: 12px;
+    color: #414143;
+    font-size: 16px;
   }
 
-  .singlePicture {
-    margin-left: 10px;
-    flex: 1;
-    >div{
-      height: 80px;
+  .otherInformation {
+    @include commonInformation();
+  }
+
+  .singleContainer {
+    display: flex;
+    .content {
+      width: 215px;
+    }
+    .singlePicture {
+      height: 100%;
+      flex: 1;
     }
   }
 
@@ -63,9 +63,10 @@
       > div:not(:last-child) {
         padding-right: 2px;
       }
-      >div,.placeholder{
+      > div,
+      .placeholder {
         flex: 1;
-        height: 80px
+        height: 80px;
       }
     }
     .otherInformation {
@@ -73,10 +74,10 @@
     }
   }
 
-  .videoContainer{
+  .videoContainer {
     display: flex;
     flex-direction: column;
-    .videoStyle{
+    .videoStyle {
       margin-bottom: 12px;
       width: 100%;
     }
@@ -89,18 +90,17 @@
     margin-left: 0px;
     margin-right: 10px;
   }
-
-  .noPicture {
-    width: 100%;
-  }
 }
 
-.setImageLeftPosition {
-  flex-direction: row-reverse;
-}
-.setImageBottomPosition {
+.setSinglePicture {
   flex-direction: column;
 }
-.setVideoBottomPosition {
+.setMultiPicture {
+  flex-direction: column;
+}
+.setSingleVideo {
+  flex-direction: column;
+}
+.setOnlyText {
   flex-direction: column;
 }
