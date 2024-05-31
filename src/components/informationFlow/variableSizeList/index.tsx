@@ -7,6 +7,7 @@ import React, {
 import { flushSync } from "react-dom";
 import { findFirstGreaterThan } from "../../../utils";
 import { BOUNDARY_QUANTITY } from "src/type/constant";
+import InfiniteScroll from "react-infinite-scroll-component";
 
 // ListItem 组件的 props 类型声明
 interface ListItemProps<T> {
@@ -17,11 +18,13 @@ interface ListItemProps<T> {
 
 // VariableSizeList 组件的 props 类型声明
 export interface VariableSizeListProps<T> {
-  containerHeight: number;
+  containerHeight?: number;
   getItemHeight: (index: number) => number;
   itemCount: number;
   itemData: T[];
   children: React.FunctionComponent<ListItemProps<T>>;
+  pullUp?: () => Promise<void>;
+  pullDown?: () => Promise<void>;
 }
 
 // VariableSizeList 组件的 ref 类型声明
@@ -35,8 +38,15 @@ export const VariableSizeList = forwardRef(
     props: VariableSizeListProps<T>,
     ref: React.Ref<VariableSizeListRef>
   ) => {
-    const { containerHeight, getItemHeight, itemCount, itemData, children } =
-      props;
+    const {
+      containerHeight = window.innerHeight,
+      getItemHeight,
+      itemCount,
+      itemData,
+      children,
+      pullUp,
+      pullDown,
+    } = props;
 
     useImperativeHandle(
       ref,
@@ -118,13 +128,38 @@ export const VariableSizeList = forwardRef(
           overflow: "auto",
           position: "relative",
         }}
+        id="scrollableDiv"
         onScroll={(e) => {
           flushSync(() => {
             setScrollTop((e.target as HTMLDivElement).scrollTop);
           });
         }}
       >
-        <div style={{ height: contentHeight }}>{itemRender}</div>
+        <InfiniteScroll
+          dataLength={itemData.length}
+          next={() =>pullUp?.()}
+          hasMore={true}
+          loader={<h3 style={{ textAlign: "center" }}>Loading...</h3>}
+          endMessage={
+            <p style={{ textAlign: "center" }}>
+              <b>Yay! You have seen it all</b>
+            </p>
+          }
+          refreshFunction={() =>pullDown?.()}
+          pullDownToRefresh
+          pullDownToRefreshThreshold={50}
+          pullDownToRefreshContent={
+            <h3 style={{ textAlign: "center" }}>
+              &#8595; Pull down to refresh
+            </h3>
+          }
+          releaseToRefreshContent={
+            <h3 style={{ textAlign: "center" }}>&#8593; Release to refresh</h3>
+          }
+          scrollableTarget="scrollableDiv"
+        >
+          <div style={{ height: contentHeight }}>{itemRender}</div>
+        </InfiniteScroll>
       </div>
     );
   }

@@ -18,8 +18,6 @@ const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
     if (itemRef.current) {
       setHeight(index, itemRef.current.getBoundingClientRect().height);
     }
-
-    console.log({ ...data[index] });
   }, [index]);
 
   return (
@@ -29,8 +27,12 @@ const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
   );
 };
 
-export const VirtualScroll = <T,>(props: { data: T[] }) => {
-  const { data } = props;
+export const VirtualScroll = <T,>(props: {
+  data: T[];
+  pullUp?: () => Promise<void>;
+  pullDown?: () => Promise<void>;
+}) => {
+  const { data, pullUp, pullDown } = props;
   const listRef = useRef<VariableSizeListRef>(null);
   const heightsRef = useRef<number[]>([]);
 
@@ -49,10 +51,11 @@ export const VirtualScroll = <T,>(props: { data: T[] }) => {
     <>
       <VariableSizeList
         ref={listRef}
-        containerHeight={884}
         itemCount={data.length}
         getItemHeight={getHeight}
         itemData={data}
+        pullUp={pullUp}
+        pullDown={pullDown}
       >
         {({ index, style, data }) => (
           <div style={style}>
