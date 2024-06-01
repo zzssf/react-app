@@ -34,7 +34,6 @@ const Item: React.FC<ItemType> = ({
         <>
           <div className={styles.singleContainer}>
             <Image
-              lazy
               src={image?.[0] || ''}
               className={[styles.singlePicture, styles.setRightMargin].join(' ')}
             />

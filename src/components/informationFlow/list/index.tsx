@@ -2,6 +2,7 @@ import { EFileType } from 'src/type/enum'
 import { VirtualScroll } from '../virtualScroll'
 import styles from './index.module.scss'
 import { ItemType } from 'src/type/informationFlow'
+import ItemRender from '../item'
 
 const data: ItemType[] = [
   {
@@ -71,7 +72,7 @@ const data: ItemType[] = [
 const List = () => {
   return (
     <div className={styles.container}>
-      <VirtualScroll data={data} />
+      <VirtualScroll data={data} renderItem={(item)=><ItemRender {...item as ItemType}/>} />
     </div>
   )
 }

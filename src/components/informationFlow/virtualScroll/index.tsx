@@ -1,18 +1,17 @@
 import { useEffect, useRef } from 'react'
 import { VariableSizeList, VariableSizeListRef } from '../variableSizeList'
-import ItemRender from '../item'
 import { DEFAULT_HEIGHT } from 'src/type/constant'
-import { ItemType } from 'src/type/informationFlow'
 
 // 列表项组件的类型声明
 interface ItemProps<T> {
   index: number;
   data: T[];
   setHeight: (index: number, height: number) => void;
+  renderItem: <T>(props: T) => JSX.Element;
 }
 
 // 列表项组件
-const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
+const Item = <T,>({ index, data, setHeight ,renderItem}: ItemProps<T>) => {
   const itemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -23,7 +22,7 @@ const Item = <T,>({ index, data, setHeight }: ItemProps<T>) => {
 
   return (
     <div ref={itemRef}>
-      <ItemRender {...data[index] as ItemType}/>
+      {renderItem(data[index])}
     </div>
   )
 }
@@ -32,8 +31,9 @@ export const VirtualScroll = <T,>(props: {
   data: T[];
   pullUp?: () => Promise<void>;
   pullDown?: () => Promise<void>;
+  renderItem:  <T>(props: T) => JSX.Element;
 }) => {
-  const { data, pullUp, pullDown } = props
+  const { data, pullUp, pullDown,renderItem } = props
   const listRef = useRef<VariableSizeListRef>(null)
   const heightsRef = useRef<number[]>([])
 
@@ -60,7 +60,7 @@ export const VirtualScroll = <T,>(props: {
       >
         {({ index, style, data }) => (
           <div style={style}>
-            <Item {...{ index, data, setHeight }} />
+            <Item {...{ index, data, setHeight,renderItem }} />
           </div>
         )}
       </VariableSizeList>
