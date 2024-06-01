@@ -5,14 +5,14 @@ module.exports = function (app) {
     '/api/v1/table',
     legacyCreateProxyMiddleware({
       target: 'http://localhost:3099',
-      changeOrigin: true,
+      changeOrigin: true
     })
   )
   app.use(
     '/api2',
     legacyCreateProxyMiddleware({
       target: 'http://localhost:4000',
-      changeOrigin: true,
+      changeOrigin: true
     })
   )
 }
