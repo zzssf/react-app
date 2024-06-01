@@ -28,7 +28,8 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "lint": "eslint --ext .tsx,.js,.ts src",
-    "lint-fix": "eslint --fix  --ext .tsx,.js,.ts src"
+    "lint-fix": "eslint --fix  --ext .tsx,.js,.ts src",
+    "lint:style": "stylelint \"src/**/*.(scss|css)\" --fix"
   },
   "eslintConfig": {
     "extends": [
@@ -54,14 +55,17 @@
     "@typescript-eslint/parser": "5.54.0",
     "eslint": "8.35.0",
     "eslint-config-prettier": "8.8.0",
-    "eslint-plugin-prettier": "4.2.1",
     "eslint-import-resolver-typescript": "^3.6.1",
     "eslint-plugin-import": "2.27.5",
+    "eslint-plugin-prettier": "4.2.1",
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "http-proxy-middleware": "^3.0.0",
     "prettier": "2.8.8",
     "sass": "^1.77.2",
-    "sass-loader": "^14.2.1"
+    "sass-loader": "^14.2.1",
+    "stylelint-config-standard": "^36.0.0",
+    "stylelint-order": "^6.0.4",
+    "stylelint": "^16.6.1"
   }
 }
