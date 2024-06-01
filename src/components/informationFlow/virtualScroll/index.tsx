@@ -1,6 +1,8 @@
 import { useEffect, useRef } from 'react'
-import { VariableSizeList, VariableSizeListRef } from '../variableSizeList'
+
 import { DEFAULT_HEIGHT } from 'src/type/constant'
+
+import { VariableSizeList, VariableSizeListRef } from '../variableSizeList'
 
 // 列表项组件的类型声明
 interface ItemProps<T> {

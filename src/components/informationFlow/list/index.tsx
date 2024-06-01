@@ -1,8 +1,10 @@
 import { EFileType } from 'src/type/enum'
-import { VirtualScroll } from '../virtualScroll'
-import styles from './index.module.scss'
 import { ItemType } from 'src/type/informationFlow'
+
 import ItemRender from '../item'
+import { VirtualScroll } from '../virtualScroll'
+
+import styles from './index.module.scss'
 
 const data: ItemType[] = [
   {

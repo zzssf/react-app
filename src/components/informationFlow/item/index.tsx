@@ -1,9 +1,12 @@
-import styles from './index.module.scss'
-import { CloseOutline } from 'antd-mobile-icons'
-import { Ellipsis, Image } from 'antd-mobile'
 import React, { useMemo } from 'react'
-import { ItemType } from '../../../type/informationFlow'
+
+import { Ellipsis, Image } from 'antd-mobile'
+import { CloseOutline } from 'antd-mobile-icons'
+
 import { EFileType } from '../../../type/enum'
+import { ItemType } from '../../../type/informationFlow'
+
+import styles from './index.module.scss'
 
 const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileType, video }) => {
   const relativeInformation = useMemo(() => {
