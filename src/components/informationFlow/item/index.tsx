@@ -5,14 +5,7 @@ import React, { useMemo } from 'react'
 import { ItemType } from '../../../type/informationFlow'
 import { EFileType } from '../../../type/enum'
 
-const Item: React.FC<ItemType> = ({
-  content,
-  comment,
-  author,
-  image = [],
-  fileType,
-  video,
-}) => {
+const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileType, video }) => {
   const relativeInformation = useMemo(() => {
     return (
       <div className={styles.otherInformation}>
@@ -33,10 +26,7 @@ const Item: React.FC<ItemType> = ({
         EFileType.SINGLE_PICTURE,
         <>
           <div className={styles.singleContainer}>
-            <Image
-              src={image?.[0] || ''}
-              className={[styles.singlePicture, styles.setRightMargin].join(' ')}
-            />
+            <Image src={image?.[0] || ''} className={[styles.singlePicture, styles.setRightMargin].join(' ')} />
             <div className={styles.content}>
               <Ellipsis
                 className={styles.main}
@@ -49,23 +39,19 @@ const Item: React.FC<ItemType> = ({
               {relativeInformation}
             </div>
           </div>
-        </>,
+        </>
       ],
       [
         EFileType.MULTI_PICTURE,
         <div className={styles.multiPicture} key={fileType}>
           <div className={styles.pictures}>
             {image?.map((imageUrl, key) => (
-              <Image
-                src={imageUrl || ''}
-                key={key}
-                className={styles.imageStyle}
-              />
+              <Image src={imageUrl || ''} key={key} className={styles.imageStyle} />
             ))}
             {image?.length === 2 && <div className={styles.placeholder} />}
           </div>
           {relativeInformation}
-        </div>,
+        </div>
       ],
       [
         EFileType.SINGLE_VIDEO,
@@ -74,29 +60,20 @@ const Item: React.FC<ItemType> = ({
             <source src={video || ''} type="video/mp4"></source>
           </video>
           {relativeInformation}
-        </div>,
+        </div>
       ],
-      [EFileType.IS_ONLY_TEXT, relativeInformation],
+      [EFileType.IS_ONLY_TEXT, relativeInformation]
     ])
 
     return pictureMaps.get(fileType)
-  }, [fileType, image, relativeInformation, video,content])
+  }, [fileType, image, relativeInformation, video, content])
 
   const containerStyle = useMemo(() => {
     const containerStylesMap = new Map([
       [EFileType.SINGLE_PICTURE, [styles.container].join(' ')],
-      [
-        EFileType.MULTI_PICTURE,
-        [styles.setMultiPicture, styles.container].join(' '),
-      ],
-      [
-        EFileType.SINGLE_VIDEO,
-        [styles.setSingleVideo, styles.container].join(' '),
-      ],
-      [
-        EFileType.IS_ONLY_TEXT,
-        [styles.setOnlyText, styles.container].join(' '),
-      ],
+      [EFileType.MULTI_PICTURE, [styles.setMultiPicture, styles.container].join(' ')],
+      [EFileType.SINGLE_VIDEO, [styles.setSingleVideo, styles.container].join(' ')],
+      [EFileType.IS_ONLY_TEXT, [styles.setOnlyText, styles.container].join(' ')]
     ])
 
     return containerStylesMap.get(fileType)

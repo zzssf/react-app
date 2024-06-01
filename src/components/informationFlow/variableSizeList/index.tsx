@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useImperativeHandle,
-  forwardRef,
-  useMemo,
-} from 'react'
+import React, { useState, useImperativeHandle, forwardRef, useMemo } from 'react'
 import { flushSync } from 'react-dom'
 import { findFirstGreaterThan } from '../../../utils'
 import { BOUNDARY_QUANTITY } from 'src/type/constant'
@@ -11,33 +6,30 @@ import InfiniteScroll from 'react-infinite-scroll-component'
 
 // ListItem 组件的 props 类型声明
 interface ListItemProps<T> {
-  index: number;
-  data: T[];
-  style: React.CSSProperties;
+  index: number
+  data: T[]
+  style: React.CSSProperties
 }
 
 // VariableSizeList 组件的 props 类型声明
 export interface VariableSizeListProps<T> {
-  containerHeight?: number;
-  getItemHeight: (index: number) => number;
-  itemCount: number;
-  itemData: T[];
-  children: React.FunctionComponent<ListItemProps<T>>;
-  pullUp?: () => Promise<void>;
-  pullDown?: () => Promise<void>;
+  containerHeight?: number
+  getItemHeight: (index: number) => number
+  itemCount: number
+  itemData: T[]
+  children: React.FunctionComponent<ListItemProps<T>>
+  pullUp?: () => Promise<void>
+  pullDown?: () => Promise<void>
 }
 
 // VariableSizeList 组件的 ref 类型声明
 export interface VariableSizeListRef {
-  resetHeight: () => void;
+  resetHeight: () => void
 }
 
 // 动态列表组件
 export const VariableSizeList = forwardRef(
-  <T,>(
-    props: VariableSizeListProps<T>,
-    ref: React.Ref<VariableSizeListRef>
-  ) => {
+  <T,>(props: VariableSizeListProps<T>, ref: React.Ref<VariableSizeListRef>) => {
     const {
       containerHeight = window.innerHeight,
       getItemHeight,
@@ -45,7 +37,7 @@ export const VariableSizeList = forwardRef(
       itemData,
       children,
       pullUp,
-      pullDown,
+      pullDown
     } = props
 
     useImperativeHandle(
@@ -54,7 +46,7 @@ export const VariableSizeList = forwardRef(
         return {
           resetHeight: () => {
             setOffsets(genOffsets())
-          },
+          }
         }
       },
       []
@@ -73,24 +65,15 @@ export const VariableSizeList = forwardRef(
     }
 
     const [offsets, setOffsets] = useState(genOffsets)
-    let startIdx = useMemo(
-      () => findFirstGreaterThan(offsets, scrollTop),
-      [offsets, scrollTop]
-    )
+    let startIdx = useMemo(() => findFirstGreaterThan(offsets, scrollTop), [offsets, scrollTop])
     let endIdx = useMemo(
       () => findFirstGreaterThan(offsets, scrollTop + containerHeight),
       [offsets, scrollTop, containerHeight]
     )
     if (endIdx === -1) endIdx = itemCount
 
-    startIdx = useMemo(
-      () => Math.max(startIdx - BOUNDARY_QUANTITY, 0),
-      [startIdx]
-    )
-    endIdx = useMemo(
-      () => Math.min(endIdx + BOUNDARY_QUANTITY, itemCount - 1),
-      [endIdx, itemCount]
-    )
+    startIdx = useMemo(() => Math.max(startIdx - BOUNDARY_QUANTITY, 0), [startIdx])
+    endIdx = useMemo(() => Math.min(endIdx + BOUNDARY_QUANTITY, itemCount - 1), [endIdx, itemCount])
 
     const contentHeight = offsets[offsets.length - 1]
 
@@ -98,10 +81,7 @@ export const VariableSizeList = forwardRef(
       const items = []
       for (let offsetIndex = startIdx; offsetIndex <= endIdx; offsetIndex++) {
         const top = offsetIndex === 0 ? 0 : offsets[offsetIndex - 1]
-        const height =
-          offsetIndex === 0
-            ? offsets[0]
-            : offsets[offsetIndex] - offsets[offsetIndex - 1]
+        const height = offsetIndex === 0 ? offsets[0] : offsets[offsetIndex] - offsets[offsetIndex - 1]
 
         items.push(
           <Component
@@ -113,7 +93,7 @@ export const VariableSizeList = forwardRef(
               left: 0,
               top,
               width: '100%',
-              height,
+              height
             }}
           />
         )
@@ -126,7 +106,7 @@ export const VariableSizeList = forwardRef(
         style={{
           height: containerHeight,
           overflow: 'auto',
-          position: 'relative',
+          position: 'relative'
         }}
         id="scrollableDiv"
         onScroll={(e) => {
@@ -137,7 +117,7 @@ export const VariableSizeList = forwardRef(
       >
         <InfiniteScroll
           dataLength={itemData.length}
-          next={() =>pullUp?.()}
+          next={() => pullUp?.()}
           hasMore={true}
           loader={<h3 style={{ textAlign: 'center' }}>Loading...</h3>}
           endMessage={
@@ -145,17 +125,11 @@ export const VariableSizeList = forwardRef(
               <b>Yay! You have seen it all</b>
             </p>
           }
-          refreshFunction={() =>pullDown?.()}
+          refreshFunction={() => pullDown?.()}
           pullDownToRefresh
           pullDownToRefreshThreshold={50}
-          pullDownToRefreshContent={
-            <h3 style={{ textAlign: 'center' }}>
-              &#8595; Pull down to refresh
-            </h3>
-          }
-          releaseToRefreshContent={
-            <h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>
-          }
+          pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
+          releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}
           scrollableTarget="scrollableDiv"
         >
           <div style={{ height: contentHeight }}>{itemRender}</div>
@@ -165,4 +139,4 @@ export const VariableSizeList = forwardRef(
   }
 )
 
-VariableSizeList.displayName='VariableSizeList'
+VariableSizeList.displayName = 'VariableSizeList'

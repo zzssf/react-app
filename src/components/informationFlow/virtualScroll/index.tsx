@@ -4,14 +4,14 @@ import { DEFAULT_HEIGHT } from 'src/type/constant'
 
 // 列表项组件的类型声明
 interface ItemProps<T> {
-  index: number;
-  data: T[];
-  setHeight: (index: number, height: number) => void;
-  renderItem: <T>(props: T) => JSX.Element;
+  index: number
+  data: T[]
+  setHeight: (index: number, height: number) => void
+  renderItem: <T>(props: T) => JSX.Element
 }
 
 // 列表项组件
-const Item = <T,>({ index, data, setHeight ,renderItem}: ItemProps<T>) => {
+const Item = <T,>({ index, data, setHeight, renderItem }: ItemProps<T>) => {
   const itemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -20,20 +20,16 @@ const Item = <T,>({ index, data, setHeight ,renderItem}: ItemProps<T>) => {
     }
   }, [index])
 
-  return (
-    <div ref={itemRef}>
-      {renderItem(data[index])}
-    </div>
-  )
+  return <div ref={itemRef}>{renderItem(data[index])}</div>
 }
 
 export const VirtualScroll = <T,>(props: {
-  data: T[];
-  pullUp?: () => Promise<void>;
-  pullDown?: () => Promise<void>;
-  renderItem:  <T>(props: T) => JSX.Element;
+  data: T[]
+  pullUp?: () => Promise<void>
+  pullDown?: () => Promise<void>
+  renderItem: <T>(props: T) => JSX.Element
 }) => {
-  const { data, pullUp, pullDown,renderItem } = props
+  const { data, pullUp, pullDown, renderItem } = props
   const listRef = useRef<VariableSizeListRef>(null)
   const heightsRef = useRef<number[]>([])
 
@@ -60,7 +56,7 @@ export const VirtualScroll = <T,>(props: {
       >
         {({ index, style, data }) => (
           <div style={style}>
-            <Item {...{ index, data, setHeight,renderItem }} />
+            <Item {...{ index, data, setHeight, renderItem }} />
           </div>
         )}
       </VariableSizeList>

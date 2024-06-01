@@ -1,9 +1,4 @@
-import React, {
-  useContext,
-  ReactNode,
-  useMemo,
-  useRef,
-} from 'react'
+import React, { useContext, ReactNode, useMemo, useRef } from 'react'
 import { InformationFlowContextType } from './index.d'
 
 const Context = React.createContext<InformationFlowContextType | null>(null)
@@ -17,12 +12,10 @@ export const useInformationFlowContext = () => {
   return values
 }
 
-export const InformationFlowContext: React.FC<{ children?: ReactNode }> = ({
-  children,
-}) => {
+export const InformationFlowContext: React.FC<{ children?: ReactNode }> = ({ children }) => {
   const sizesRef = useRef<Record<number, number>>({})
 
-  const values=useMemo(() => {
+  const values = useMemo(() => {
     return {
       sizesRef
     }
