@@ -1,7 +1,7 @@
 .container {
+  overflow: auto;
   padding: 0 18px;
   height: 100vh;
-  overflow: auto;
   -webkit-overflow-scrolling: touch; /* 为iOS设备提供平滑滚动 */
   touch-action: pan-y; /* 允许垂直滑动 */
   scrollbar-width: none; /* Firefox */
