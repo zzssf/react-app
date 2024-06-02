@@ -1,17 +1,17 @@
-{
-  "extends": ["stylelint-config-standard"],
-  "plugins": ["stylelint-order"],
-  "rules": {
+module.exports = {
+  extends: ["stylelint-config-standard"],
+  plugins: ["stylelint-order"],
+  rules: {
     "at-rule-empty-line-before": [
       "always",
       {
-        "except": ["inside-block"]
+        except: ["inside-block"]
       }
     ],
     "rule-empty-line-before": [
       "always",
       {
-        "except": ["first-nested"]
+        except: ["first-nested"]
       }
     ],
     "custom-property-no-missing-var-function": true,
@@ -25,13 +25,13 @@
     "selector-type-no-unknown": [
       true,
       {
-        "ignoreTypes": []
+        ignoreTypes: []
       }
     ],
     "selector-pseudo-element-no-unknown": [
       true,
       {
-        "ignorePseudoElements": ["v-deep"]
+        ignorePseudoElements: ["v-deep"]
       }
     ],
     "no-descending-specificity": null,
@@ -119,5 +119,5 @@
       "transition"
     ]
   },
-  "ignoreFiles": ["dist/**/*", "node_modules/**/*"]
+  ignoreFiles: ["dist/**/*", "node_modules/**/*"]
 }
