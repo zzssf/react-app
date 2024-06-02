@@ -39,7 +39,7 @@
     color: #414143;
     word-wrap: break-word;
   }
-  
+
   .otherInformation {
     @include commonInformation();
   }
@@ -57,7 +57,7 @@
     }
   }
 
-  .multiPicture{
+  .multiPicture {
     display: flex;
     flex-direction: column;
 
@@ -113,6 +113,6 @@
   flex-direction: column;
 }
 
-.setOnlyText{
+.setOnlyText {
   flex-direction: column;
 }
