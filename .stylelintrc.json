@@ -2,7 +2,23 @@
   "extends": ["stylelint-config-standard"],
   "plugins": ["stylelint-order"],
   "rules": {
-    "declaration-empty-line-before": null,
+    "at-rule-empty-line-before": [
+      "always",
+      {
+        "except": ["inside-block"]
+      }
+    ],
+    "rule-empty-line-before": [
+      "always",
+      {
+        "except": ["first-nested"]
+      }
+    ],
+    "custom-property-no-missing-var-function": true,
+    "no-irregular-whitespace": true,
+    "string-no-newline": true,
+    "color-no-invalid-hex": true,
+    "declaration-empty-line-before": "never",
     "selector-class-pattern": null,
     "block-no-empty": true,
     "color-hex-length": "long",
