@@ -2,7 +2,7 @@ module.exports = {
   extends: ['stylelint-config-standard'],
   plugins: ['stylelint-order'],
   rules: {
-    "comment-empty-line-before":["always",{except: ["first-nested"]}],
+    'comment-empty-line-before': ['always', { except: ['first-nested'] }],
     'at-rule-empty-line-before': [
       'always',
       {
@@ -115,12 +115,5 @@ module.exports = {
       'transition'
     ]
   },
-  ignoreFiles: [
-    '**/*.png|eot|ttf|woff',
-    '**/*.js|jsx|ts|tsx',
-    'docs/**',
-    'scripts/**',
-    'dist/**/*',
-    'node_modules/**/*'
-  ]
+  ignoreFiles: ['dist/**/*', 'node_modules/**/*']
 }
