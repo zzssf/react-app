@@ -29,7 +29,9 @@
     "eject": "react-scripts eject",
     "lint": "eslint --ext .tsx,.js,.ts src",
     "lint-fix": "eslint --fix  --ext .tsx,.js,.ts src",
-    "lint:style": "stylelint \"src/**/*.(scss|css)\" --fix"
+    "lint:style": "stylelint \"src/**/*.(scss|css)\" --fix",
+    "commitlint": "commitlint --config commitlint.config.js -e -V",
+    "prepare": "husky install"
   },
   "eslintConfig": {
     "extends": [
@@ -50,6 +52,8 @@
     ]
   },
   "devDependencies": {
+    "@commitlint/cli": "^19.3.0",
+    "@commitlint/config-conventional": "^19.2.2",
     "@faker-js/faker": "^8.4.1",
     "@typescript-eslint/eslint-plugin": "5.54.0",
     "@typescript-eslint/parser": "5.54.0",
@@ -61,11 +65,20 @@
     "eslint-plugin-react": "7.32.2",
     "eslint-plugin-react-hooks": "4.6.0",
     "http-proxy-middleware": "^3.0.0",
+    "husky": "^8.0.0",
+    "lint-staged": "^15.2.5",
     "prettier": "2.8.8",
     "sass": "^1.77.2",
     "sass-loader": "^14.2.1",
     "stylelint": "^16.6.1",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.4"
+  },
+  "lint-staged": {
+    "**/*.{js,jsx,ts,tsx}": "npm run lint",
+    "**/*.{js,jsx,tsx,ts}": [
+      "prettier --write",
+      "eslint --fix"
+    ]
   }
 }
