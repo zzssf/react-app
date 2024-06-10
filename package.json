@@ -11,6 +11,7 @@
     "@types/react": "^18.2.79",
     "@types/react-dom": "^18.2.25",
     "@types/react-window": "^1.8.8",
+    "ahooks": "^3.8.0",
     "antd-mobile": "^5.36.0",
     "antd-mobile-icons": "^0.3.0",
     "react": "^18.2.0",
