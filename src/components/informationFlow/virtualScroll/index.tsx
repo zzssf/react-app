@@ -1,4 +1,4 @@
-import { useEffect, useRef } from 'react'
+import { memo, useEffect, useRef } from 'react'
 
 import { DEFAULT_HEIGHT } from 'src/type/constant'
 
@@ -13,7 +13,7 @@ interface ItemProps<T> {
 }
 
 // 列表项组件
-const Item = <T,>({ index, data, setHeight, renderItem }: ItemProps<T>) => {
+const Item = memo(<T,>({ index, data, setHeight, renderItem }: ItemProps<T>) => {
   const itemRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -23,15 +23,18 @@ const Item = <T,>({ index, data, setHeight, renderItem }: ItemProps<T>) => {
   }, [index])
 
   return <div ref={itemRef}>{renderItem(data[index])}</div>
-}
+})
+
+Item.displayName = 'Item'
 
 export const VirtualScroll = <T,>(props: {
   data: T[]
-  pullUp?: () => Promise<void>
-  pullDown?: () => Promise<void>
+  loadMore?: () => Promise<void>
+  pullDownRefresh?: () => Promise<void>
   renderItem: <T>(props: T) => JSX.Element
+  hasMore?: boolean
 }) => {
-  const { data, pullUp, pullDown, renderItem } = props
+  const { data, loadMore, pullDownRefresh, renderItem, hasMore } = props
   const listRef = useRef<VariableSizeListRef>(null)
   const heightsRef = useRef<number[]>([])
 
@@ -53,8 +56,9 @@ export const VirtualScroll = <T,>(props: {
         itemCount={data.length}
         getItemHeight={getHeight}
         itemData={data}
-        pullUp={pullUp}
-        pullDown={pullDown}
+        loadMore={loadMore}
+        pullDownRefresh={pullDownRefresh}
+        hasMore={hasMore}
       >
         {({ index, style, data }) => (
           <div style={style}>

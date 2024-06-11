@@ -1,3 +1,5 @@
+import { useState } from 'react'
+
 import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 
@@ -5,6 +7,10 @@ import ItemRender from '../item'
 import { VirtualScroll } from '../virtualScroll'
 
 import styles from './index.module.scss'
+
+const generateData = (start: number, end: number) => {
+  return Array.from({ length: end - start }, (_, i) => data[Math.floor(Math.random() * 6)])
+}
 
 const data: ItemType[] = [
   {
@@ -69,9 +75,31 @@ const data: ItemType[] = [
 ]
 
 const List = () => {
+  const [items, setItems] = useState<ItemType[]>(generateData(0, 10))
+  const [hasMore, setHasMore] = useState(true)
+
   return (
     <div className={styles.container}>
-      <VirtualScroll data={data} renderItem={(item) => <ItemRender {...(item as ItemType)} />} />
+      <VirtualScroll
+        data={items}
+        hasMore={hasMore}
+        loadMore={async () => {
+          if (items.length >= 100) {
+            setHasMore(false)
+            return
+          }
+          await new Promise((resolve) => setTimeout(resolve, 1500))
+          console.log('loadMore')
+          setItems((prevItems) => [...prevItems, ...generateData(prevItems.length, prevItems.length + 10)])
+        }}
+        pullDownRefresh={async () => {
+          await new Promise((resolve) => setTimeout(resolve, 1500))
+          setItems(generateData(0, 10))
+          setHasMore(true)
+          console.log('pullDownRefresh')
+        }}
+        renderItem={(item) => <ItemRender {...(item as ItemType)} />}
+      />
     </div>
   )
 }

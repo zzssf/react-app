@@ -1,8 +1,8 @@
 import React, { useState, useImperativeHandle, forwardRef, useMemo } from 'react'
 
 import { flushSync } from 'react-dom'
-import InfiniteScroll from 'react-infinite-scroll-component'
 
+import InfiniteScroll from 'src/components/infiniteScroll'
 import { BOUNDARY_QUANTITY } from 'src/type/constant'
 
 import { findFirstGreaterThan } from '../../../utils'
@@ -21,8 +21,9 @@ export interface VariableSizeListProps<T> {
   itemCount: number
   itemData: T[]
   children: React.FunctionComponent<ListItemProps<T>>
-  pullUp?: () => Promise<void>
-  pullDown?: () => Promise<void>
+  loadMore?: () => Promise<void>
+  pullDownRefresh?: () => Promise<void>
+  hasMore?: boolean
 }
 
 // VariableSizeList 组件的 ref 类型声明
@@ -39,8 +40,9 @@ export const VariableSizeList = forwardRef(
       itemCount,
       itemData,
       children,
-      pullUp,
-      pullDown
+      loadMore,
+      pullDownRefresh,
+      hasMore
     } = props
 
     useImperativeHandle(
@@ -86,6 +88,10 @@ export const VariableSizeList = forwardRef(
         const top = offsetIndex === 0 ? 0 : offsets[offsetIndex - 1]
         const height = offsetIndex === 0 ? offsets[0] : offsets[offsetIndex] - offsets[offsetIndex - 1]
 
+        if (!top || !height) {
+          setOffsets(genOffsets())
+        }
+
         items.push(
           <Component
             key={offsetIndex}
@@ -102,42 +108,26 @@ export const VariableSizeList = forwardRef(
         )
       }
       return items
-    }, [startIdx, endIdx, itemData, offsets, Component])
+    }, [startIdx, endIdx, itemData, Component])
 
     return (
-      <div
+      <InfiniteScroll
+        hasMore={hasMore}
+        loadMore={loadMore}
+        pullDownRefresh={pullDownRefresh}
         style={{
           height: containerHeight,
           overflow: 'auto',
           position: 'relative'
         }}
-        id="scrollableDiv"
         onScroll={(e) => {
           flushSync(() => {
             setScrollTop((e.target as HTMLDivElement).scrollTop)
           })
         }}
       >
-        <InfiniteScroll
-          dataLength={itemData.length}
-          next={() => pullUp?.()}
-          hasMore={true}
-          loader={<h3 style={{ textAlign: 'center' }}>Loading...</h3>}
-          endMessage={
-            <p style={{ textAlign: 'center' }}>
-              <b>Yay! You have seen it all</b>
-            </p>
-          }
-          refreshFunction={() => pullDown?.()}
-          pullDownToRefresh
-          pullDownToRefreshThreshold={50}
-          pullDownToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8595; Pull down to refresh</h3>}
-          releaseToRefreshContent={<h3 style={{ textAlign: 'center' }}>&#8593; Release to refresh</h3>}
-          scrollableTarget="scrollableDiv"
-        >
-          <div style={{ height: contentHeight }}>{itemRender}</div>
-        </InfiniteScroll>
-      </div>
+        <div style={{ height: contentHeight }}>{itemRender}</div>
+      </InfiniteScroll>
     )
   }
 )
