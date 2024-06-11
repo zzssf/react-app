@@ -1,10 +1,10 @@
-import { EImagePosition } from "../enum";
+import { EFileType } from '../enum'
 
 export interface ItemType {
-  content?: string;
-  commentInfo?: string;
-  author?: string;
-  image?: string[];
-  imagePosition?: EImagePosition;
-  video?: string;
+  content: string
+  comment: string
+  author: string
+  image: string[] | null
+  fileType: EFileType
+  video: string | null
 }

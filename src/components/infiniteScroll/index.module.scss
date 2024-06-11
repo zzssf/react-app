@@ -1,0 +1,59 @@
+.container {
+  position: relative;
+  overflow-y: auto;
+  height: 100vh;
+  background: #f9f9f9;
+}
+
+.content {
+  position: relative;
+  transition: transform 0.2s ease-in-out; /* 添加过渡效果 */
+}
+
+.pullDown {
+  position: absolute;
+  top: -50px; /* 初始位置在视图之外 */
+  left: 50%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  opacity: 0;
+  transition: opacity 0.2s ease-in-out; /* 添加平滑过渡效果 */
+  transform: translateX(-50%);
+}
+
+.pullDownActive {
+  opacity: 1;
+}
+
+.loading {
+  padding: 10px;
+  text-align: center;
+}
+
+.sentinel {
+  width: 100%;
+  height: 1px;
+}
+
+/* 动态旋转动画 */
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.spinner {
+  border: 4px solid rgb(0 0 0 / 10%);
+  border-top: 4px solid #000000;
+  border-radius: 50%;
+  width: 24px;
+  height: 24px;
+  animation: spin 1s linear infinite;
+}

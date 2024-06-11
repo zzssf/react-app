@@ -2,19 +2,20 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #969799;
   font-size: 12px;
+  color: #969799;
+
   span:nth-child(1) {
     margin-right: 8px;
   }
 
   .iconContainer {
     display: inline-flex;
-    align-items: center;
     justify-content: center;
+    align-items: center;
+    border-radius: 20px / 15px; /* 椭圆形的半径，水平半径大于垂直半径 */
     width: 20px;
     height: 15px;
-    border-radius: 20px / 15px; /* 椭圆形的半径，水平半径大于垂直半径 */
     background-color: #f6f6f6;
 
     .icon {
@@ -26,81 +27,92 @@
 }
 
 .container {
-  padding: 12px 0;
   display: flex;
-  box-sizing: content-box;
   border-bottom: 1px solid #f7f0f0;
+  padding: 12px 0;
+  box-sizing: content-box;
 
-  .textContent {
-    width: 215px;
-
-    .main {
-      word-wrap: break-word;
-      margin-bottom: 12px;
-      color: #414143;
-      font-size: 16px;
-    }
-
-    .otherInformation {
-      @include commonInformation();
-    }
+  .main {
+    margin-bottom: 12px;
+    width: 100%;
+    font-size: 16px;
+    color: #414143;
+    word-wrap: break-word;
   }
 
-  .singlePicture {
-    margin-left: 10px;
-    flex: 1;
-    >div{
-      height: 80px;
+  .otherInformation {
+    @include commonInformation();
+  }
+
+  .singleContainer {
+    display: flex;
+
+    .content {
+      width: 215px;
+    }
+
+    .singlePicture {
+      height: 100%;
+      flex: 1;
     }
   }
 
   .multiPicture {
     display: flex;
     flex-direction: column;
+
     .pictures {
       display: flex;
       margin-bottom: 12px;
+
       > div:not(:last-child) {
         padding-right: 2px;
       }
-      >div,.placeholder{
+
+      > div,
+      .placeholder {
         flex: 1;
-        height: 80px
+        height: 80px;
       }
     }
+
     .otherInformation {
       @include commonInformation();
     }
   }
 
-  .videoContainer{
+  .videoContainer {
     display: flex;
     flex-direction: column;
-    .videoStyle{
+
+    .videoStyle {
       margin-bottom: 12px;
       width: 100%;
     }
+
     .otherInformation {
       @include commonInformation();
     }
   }
 
   .setRightMargin {
-    margin-left: 0px;
     margin-right: 10px;
-  }
-
-  .noPicture {
-    width: 100%;
+    margin-left: 0;
   }
 }
 
-.setImageLeftPosition {
-  flex-direction: row-reverse;
-}
-.setImageBottomPosition {
+.setSinglePicture {
   flex-direction: column;
 }
-.setVideoBottomPosition {
+
+.setMultiPicture {
+  flex-direction: column;
+}
+
+.setSingleVideo {
+  flex-direction: column;
+}
+
+.setOnlyText {
   flex-direction: column;
 }

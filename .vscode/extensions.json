@@ -1,0 +1,8 @@
+{
+  "recommendations": [
+    "spacegray.editorconfig-dev",
+    "dbaeumer.vscode-eslint",
+    "esbenp.prettier-vscode",
+    "stylelint.vscode-stylelint"
+  ]
+}

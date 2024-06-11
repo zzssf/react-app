@@ -1,0 +1,9 @@
+# Prettier 会忽略的文件
+
+# macOS 系统中存储文件夹的自定义属性的隐藏文件，Prettier 会忽略这个文件
+.DS_Store
+node_modules
+dist
+dist-ssr
+*.local
+.npmrc
