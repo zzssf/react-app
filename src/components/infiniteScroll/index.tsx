@@ -32,29 +32,30 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
   const containerRef = useRef<HTMLDivElement>(null)
   const startYRef = useRef<number | null>(null)
 
-  // const handleScroll = useCallback(async () => {
-  //   if (isLoadingMore || !hasMore || !sentinelRef.current || !containerRef.current) return
+  const handleScroll = useCallback(async () => {
+    if (isLoadingMore || !hasMore || !sentinelRef.current || !containerRef.current) return
 
-  //   const rect = sentinelRef.current.getBoundingClientRect()
-  //   if (rect.top <= window.innerHeight) {
-  //     setIsLoadingMore(true)
-  //     await loadMore?.()
-  //     setIsLoadingMore(false)
-  //   }
-  // }, [isLoadingMore, hasMore, loadMore])
-
-  const handleScroll = useCallback(() => {
-    if (
-      !isLoadingMore &&
-      hasMore &&
-      containerRef.current &&
-      containerRef.current.scrollHeight - containerRef.current.scrollTop <=
-        containerRef.current.clientHeight + pullDownThreshold
-    ) {
+    const rect = sentinelRef.current.getBoundingClientRect()
+    if (rect.top <= window.innerHeight) {
       setIsLoadingMore(true)
-      loadMore?.().finally(() => setIsLoadingMore(false))
+      await loadMore?.()
+      setIsLoadingMore(false)
     }
-  }, [isLoadingMore, hasMore, loadMore, pullDownThreshold])
+  }, [isLoadingMore, hasMore, loadMore])
+
+  /**加载更多方案二 */
+  // const handleScroll = useCallback(() => {
+  //   if (
+  //     !isLoadingMore &&
+  //     hasMore &&
+  //     containerRef.current &&
+  //     containerRef.current.scrollHeight - containerRef.current.scrollTop <=
+  //       containerRef.current.clientHeight + pullDownThreshold
+  //   ) {
+  //     setIsLoadingMore(true)
+  //     loadMore?.().finally(() => setIsLoadingMore(false))
+  //   }
+  // }, [isLoadingMore, hasMore, loadMore, pullDownThreshold])
 
   useEffect(() => {
     const container = containerRef.current
@@ -68,29 +69,29 @@ const InfiniteScroll: React.FC<InfiniteScrollProps> = ({
     wait: 500
   })
 
-  // useEffect(() => {
-  //   const observer = new IntersectionObserver(
-  //     ([entry]) => {
-  //       if (entry.isIntersecting && !isLoadingMore && hasMore && !isPullingDown) {
-  //         handleScroll()
-  //       }
-  //     },
-  //     {
-  //       root: containerRef.current,
-  //       threshold: 0.1
-  //     }
-  //   )
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting && !isLoadingMore && hasMore && !isPullingDown) {
+          handleScroll()
+        }
+      },
+      {
+        root: containerRef.current,
+        threshold: 0.1
+      }
+    )
 
-  //   if (sentinelRef.current) {
-  //     observer.observe(sentinelRef.current)
-  //   }
+    if (sentinelRef.current) {
+      observer.observe(sentinelRef.current)
+    }
 
-  //   return () => {
-  //     if (sentinelRef.current) {
-  //       observer.unobserve(sentinelRef.current)
-  //     }
-  //   }
-  // }, [isLoadingMore, hasMore, isPullingDown])
+    return () => {
+      if (sentinelRef.current) {
+        observer.unobserve(sentinelRef.current)
+      }
+    }
+  }, [isLoadingMore, hasMore, isPullingDown])
 
   const handleTouchStart = (e: React.TouchEvent<HTMLDivElement>) => {
     startYRef.current = e.touches[0].clientY
