@@ -4,8 +4,7 @@ import { flushSync } from 'react-dom'
 
 import { InfiniteScroll, InfiniteScrollRef } from 'src/components/infiniteScroll'
 import { BOUNDARY_QUANTITY } from 'src/type/constant'
-
-import { findFirstGreaterThan } from '../../../utils'
+import { findFirstGreaterThan } from 'src/utils'
 
 // ListItem 组件的 props 类型声明
 interface ListItemProps<T> {

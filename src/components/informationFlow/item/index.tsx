@@ -3,8 +3,8 @@ import React, { useMemo } from 'react'
 import { Ellipsis, Image } from 'antd-mobile'
 import { CloseOutline } from 'antd-mobile-icons'
 
-import { EFileType } from '../../../type/enum'
-import { ItemType } from '../../../type/informationFlow'
+import { EFileType } from 'src/type/enum'
+import { ItemType } from 'src/type/informationFlow'
 
 import styles from './index.module.scss'
 

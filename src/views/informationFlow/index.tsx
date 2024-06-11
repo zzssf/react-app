@@ -1,5 +1,5 @@
-import FlowList from '../../components/informationFlow/list'
-import { InformationFlowContext } from '../../context/informationFlowContext'
+import FlowList from 'src/components/informationFlow/list'
+import { InformationFlowContext } from 'src/context/informationFlowContext'
 
 const InformationFlow = () => {
   return (
