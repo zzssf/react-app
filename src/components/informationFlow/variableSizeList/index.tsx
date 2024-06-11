@@ -1,8 +1,8 @@
-import React, { useState, useImperativeHandle, forwardRef, useMemo } from 'react'
+import React, { useState, useImperativeHandle, forwardRef, useMemo, useRef } from 'react'
 
 import { flushSync } from 'react-dom'
 
-import InfiniteScroll from 'src/components/infiniteScroll'
+import { InfiniteScroll, InfiniteScrollRef } from 'src/components/infiniteScroll'
 import { BOUNDARY_QUANTITY } from 'src/type/constant'
 
 import { findFirstGreaterThan } from '../../../utils'
@@ -27,7 +27,7 @@ export interface VariableSizeListProps<T> {
 }
 
 // VariableSizeList 组件的 ref 类型声明
-export interface VariableSizeListRef {
+export interface VariableSizeListRef extends InfiniteScrollRef {
   resetHeight: () => void
 }
 
@@ -45,13 +45,16 @@ export const VariableSizeList = forwardRef(
       hasMore
     } = props
 
+    const infiniteScrollRef = useRef<InfiniteScrollRef>(null)
+
     useImperativeHandle(
       ref,
       () => {
         return {
           resetHeight: () => {
             setOffsets(genOffsets())
-          }
+          },
+          containerRef: infiniteScrollRef?.current?.containerRef
         }
       },
       []
@@ -112,6 +115,7 @@ export const VariableSizeList = forwardRef(
 
     return (
       <InfiniteScroll
+        ref={infiniteScrollRef}
         hasMore={hasMore}
         loadMore={loadMore}
         pullDownRefresh={pullDownRefresh}

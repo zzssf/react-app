@@ -78,6 +78,54 @@ const List = () => {
   const [items, setItems] = useState<ItemType[]>(generateData(0, 10))
   const [hasMore, setHasMore] = useState(true)
 
+  // 图片和视频预加载函数
+  const preloadMedia = (items: ItemType[]) => {
+    const uniqueImages = new Set<string>()
+    const uniqueVideos = new Set<string>()
+
+    items.forEach((item) => {
+      item.image?.forEach((img) => uniqueImages.add(img))
+      if (item.video) uniqueVideos.add(item.video)
+    })
+
+    uniqueImages.forEach((src) => {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.href = src
+      link.as = 'image'
+      document.head.appendChild(link)
+    })
+
+    uniqueVideos.forEach((src) => {
+      const link = document.createElement('link')
+      link.rel = 'preload'
+      link.href = src
+      link.as = 'video'
+      document.head.appendChild(link)
+    })
+  }
+
+  // 图片和视频预加载方案二
+  // const preloadMedia = (items: ItemType[]) => {
+  //   const uniqueImages = new Set<string>()
+  //   const uniqueVideos = new Set<string>()
+
+  //   items.forEach((item) => {
+  //     item.image?.forEach((img) => uniqueImages.add(img))
+  //     if (item.video) uniqueVideos.add(item.video)
+  //   })
+
+  //   uniqueImages.forEach((src) => {
+  //     const img = new Image()
+  //     img.src = src
+  //   })
+
+  //   uniqueVideos.forEach((src) => {
+  //     const video = document.createElement('video')
+  //     video.src = src
+  //   })
+  // }
+
   return (
     <div className={styles.container}>
       <VirtualScroll
@@ -99,6 +147,7 @@ const List = () => {
           console.log('pullDownRefresh')
         }}
         renderItem={(item) => <ItemRender {...(item as ItemType)} />}
+        preloadMedia={preloadMedia}
       />
     </div>
   )
