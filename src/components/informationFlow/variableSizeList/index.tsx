@@ -1,4 +1,4 @@
-import React, { useState, useImperativeHandle, forwardRef, useMemo, useRef } from 'react'
+import React, { useState, useImperativeHandle, forwardRef, useMemo, useRef, useEffect } from 'react'
 
 import { flushSync } from 'react-dom'
 
@@ -43,8 +43,10 @@ export const VariableSizeList = forwardRef(
       pullDownRefresh,
       hasMore
     } = props
-
     const infiniteScrollRef = useRef<InfiniteScrollRef>(null)
+    const Component = children as React.FunctionComponent<ListItemProps<T>>
+    const [scrollTop, setScrollTop] = useState(0) // 滚动高度
+    const [offsets, setOffsets] = useState<number[]>([])
 
     useImperativeHandle(
       ref,
@@ -59,9 +61,6 @@ export const VariableSizeList = forwardRef(
       []
     )
 
-    const Component = children as React.FunctionComponent<ListItemProps<T>>
-    const [scrollTop, setScrollTop] = useState(0) // 滚动高度
-
     const genOffsets = () => {
       const heightArray: number[] = []
       heightArray[0] = getItemHeight(0)
@@ -71,7 +70,10 @@ export const VariableSizeList = forwardRef(
       return heightArray
     }
 
-    const [offsets, setOffsets] = useState(genOffsets)
+    useEffect(() => {
+      setOffsets(genOffsets())
+    }, [itemCount])
+
     let startIdx = useMemo(() => findFirstGreaterThan(offsets, scrollTop), [offsets, scrollTop])
     let endIdx = useMemo(
       () => findFirstGreaterThan(offsets, scrollTop + containerHeight),
@@ -90,10 +92,6 @@ export const VariableSizeList = forwardRef(
         const top = offsetIndex === 0 ? 0 : offsets[offsetIndex - 1]
         const height = offsetIndex === 0 ? offsets[0] : offsets[offsetIndex] - offsets[offsetIndex - 1]
 
-        if (!top || !height) {
-          setOffsets(genOffsets())
-        }
-
         items.push(
           <Component
             key={offsetIndex}
@@ -110,7 +108,7 @@ export const VariableSizeList = forwardRef(
         )
       }
       return items
-    }, [startIdx, endIdx, itemData, Component])
+    }, [startIdx, endIdx, itemData, Component, offsets])
 
     return (
       <InfiniteScroll
