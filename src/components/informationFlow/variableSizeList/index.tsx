@@ -1,6 +1,7 @@
 import React, { useState, useImperativeHandle, forwardRef, useMemo, useRef, useEffect } from 'react'
 
 import { flushSync } from 'react-dom'
+import { unstable_scheduleCallback as scheduleCallback } from 'scheduler'
 
 import { InfiniteScroll, InfiniteScrollRef } from 'src/components/infiniteScroll'
 import { BOUNDARY_QUANTITY } from 'src/type/constant'
@@ -71,7 +72,9 @@ export const VariableSizeList = forwardRef(
     }
 
     useEffect(() => {
-      setOffsets(genOffsets())
+      scheduleCallback(1, (didTime) => {
+        setOffsets(genOffsets())
+      })
     }, [itemCount])
 
     let startIdx = useMemo(() => findFirstGreaterThan(offsets, scrollTop), [offsets, scrollTop])
