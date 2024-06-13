@@ -1,5 +1,5 @@
 {
-  "name": "my-app",
+  "name": "react-app",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -30,8 +30,8 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .tsx,.js,.ts src",
-    "lint-fix": "eslint --fix  --ext .tsx,.js,.ts src",
+    "lint": "eslint --ext .tsx,.js,.jsx,.ts src",
+    "lint-fix": "eslint --fix  --ext .tsx,.js,.jsx,.ts src",
     "lint:style": "stylelint \"src/**/*.(scss|css)\" --fix",
     "commitlint": "commitlint --config commitlint.config.js -e -V",
     "prepare": "husky install"
@@ -78,10 +78,7 @@
     "stylelint-order": "^6.0.4"
   },
   "lint-staged": {
-    "**/*.{js,jsx,ts,tsx}": "npm run lint",
-    "**/*.{js,jsx,tsx,ts}": [
-      "prettier --write",
-      "eslint --fix"
-    ]
+    "**/*.{js,jsx,ts,tsx}": "pnpm run lint-fix",
+    "**/*.{scss,css}": "pnpm run lint:style"
   }
 }
