@@ -1,6 +1,6 @@
 {
   "recommendations": [
-    "spacegray.editorconfig-dev",
+    "EditorConfig.EditorConfig",
     "dbaeumer.vscode-eslint",
     "esbenp.prettier-vscode",
     "stylelint.vscode-stylelint"
