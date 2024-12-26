@@ -1,7 +1,47 @@
-@mixin commonInformation() {
+/* stylelint-disable-next-line no-invalid-double-slash-comments */
+// 基础布局混入
+@mixin flexLayout($justify: center, $align: center) {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: $justify;
+  align-items: $align;
+}
+
+/* stylelint-disable-next-line no-invalid-double-slash-comments */
+// 定位混入
+@mixin absoluteFull {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/* stylelint-disable-next-line no-invalid-double-slash-comments */
+// 文本溢出混入
+@mixin textOverflow($lines: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $lines == 1 {
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+}
+
+/* stylelint-disable-next-line no-invalid-double-slash-comments */
+// 基础容器混入
+@mixin baseContainer {
+  overflow: hidden;
+  width: 100%;
+}
+
+@mixin commonInformation {
+  @include flexLayout(space-between);
   margin-top: 8px;
   font-size: 12px;
   color: #969799;
@@ -11,9 +51,7 @@
   }
 
   .iconContainer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    @include flexLayout;
     overflow: hidden;
     border-radius: 50%;
     width: 16px;
@@ -39,15 +77,6 @@
   background: #f5f5f5;
 }
 
-@mixin imageStyle {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
 @mixin imageGrid {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -56,220 +85,43 @@
 }
 
 .container {
-  display: flex;
-  overflow: hidden;
+  @include flexLayout(flex-start, flex-start);
+  @include baseContainer;
   margin: 0 auto;
   border-bottom: 1px solid #f7f0f0;
   padding: 12px;
-  width: 100%;
   max-width: 800px;
   flex-direction: column;
   box-sizing: border-box;
 
   .main {
-    display: -webkit-box;
-    overflow: hidden;
+    @include textOverflow(3);
     margin-bottom: 12px;
     width: 100%;
     font-size: 16px;
-    text-overflow: ellipsis;
     color: #414143;
-    word-wrap: break-word;
-    word-break: break-all;
-    overflow-wrap: break-word;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
     @media screen and (width <= 768px) {
       font-size: 14px;
     }
   }
 
   .otherInformation {
-    @include commonInformation();
-    overflow: hidden;
-    width: 100%;
+    @include commonInformation;
+    @include baseContainer;
 
     > div:first-child {
-      overflow: hidden;
+      @include textOverflow;
       min-width: 0;
-      text-overflow: ellipsis;
-      white-space: nowrap;
       flex: 1;
     }
-  }
-
-  .singleContainer {
-    display: flex;
-    align-items: start;
-    overflow: hidden;
-    width: 100%;
-    @media screen and (width <= 768px) {
-      flex-direction: column;
-    }
-    @include imageGrid;
-
-    .singlePicture {
-      @include imageContainer;
-      grid-column: 1 / 2;
-      position: relative;
-    }
-
-    .content {
-      display: flex;
-      justify-content: space-between;
-      overflow: hidden;
-      width: 100%;
-      height: 100%;
-      grid-column: 2 / -1;
-      flex-direction: column;
-
-      .main {
-        display: -webkit-box;
-        overflow: hidden;
-        margin-bottom: 8px;
-        width: 100%;
-        font-size: 16px;
-        text-overflow: ellipsis;
-        color: #414143;
-        word-wrap: break-word;
-        word-break: break-all;
-        overflow-wrap: break-word;
-        -webkit-line-clamp: 3;
-        -webkit-box-orient: vertical;
-        @media screen and (width <= 768px) {
-          font-size: 14px;
-        }
-      }
-
-      .otherInformation {
-        @include commonInformation();
-        overflow: hidden;
-        margin-top: auto;
-        width: 100%;
-
-        > div:first-child {
-          overflow: hidden;
-          min-width: 0;
-          text-overflow: ellipsis;
-          white-space: nowrap;
-          flex: 1;
-        }
-      }
-    }
-  }
-
-  .multiPicture {
-    overflow: hidden;
-    width: 100%;
-
-    .pictures {
-      @include imageGrid;
-      margin-bottom: 12px;
-
-      > div {
-        @include imageContainer;
-        position: relative;
-      }
-    }
-  }
-
-  .videoContainer {
-    overflow: hidden;
-    width: 100%;
-
-    .videoStyle {
-      width: 100%;
-      max-height: 400px;
-      @media screen and (width <= 768px) {
-        max-height: 300px;
-      }
-      @media screen and (width <= 480px) {
-        max-height: 200px;
-      }
-    }
-  }
-}
-
-.setSinglePicture {
-  flex-direction: column;
-}
-
-.setMultiPicture {
-  flex-direction: column;
-}
-
-.setSingleVideo {
-  flex-direction: column;
-}
-
-.setOnlyText {
-  flex-direction: column;
-}
-
-.imageContainer {
-  @include imageGrid;
-  margin: 8px 0;
-  @media screen and (width <= 768px) {
-    gap: 4px;
-  }
-
-  /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
-  :global {
-    .adm-image {
-      @include imageContainer;
-
-      &-img {
-        @include imageStyle;
-      }
-    }
-  }
-}
-
-@keyframes rotate {
-  from {
-    transform: rotate(0deg);
-  }
-
-  to {
-    transform: rotate(360deg);
-  }
-}
-
-.placeholder {
-  position: absolute;
-  top: 0;
-  left: 0;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  width: 100%;
-  height: 100%;
-  background: #f5f5f5;
-
-  &::after {
-    border: 2px solid #e8e8e8;
-    border-top-color: #999999;
-    border-radius: 50%;
-    width: 24px;
-    height: 24px;
-    content: '';
-    animation: rotate 0.8s linear infinite;
   }
 }
 
 .imageWrapper {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
+  @include absoluteFull;
 
   .actualImage {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    @include absoluteFull;
 
     /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
     :global {
@@ -285,4 +137,106 @@
       }
     }
   }
+}
+
+.placeholder {
+  @include absoluteFull;
+  @include flexLayout;
+  background: #f5f5f5;
+
+  &::after {
+    border: 2px solid #e8e8e8;
+    border-top-color: #999999;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    content: '';
+    animation: rotate 0.8s linear infinite;
+  }
+}
+
+.singleContainer {
+  @include flexLayout(flex-start, flex-start);
+  @include baseContainer;
+  @include imageGrid;
+  @media screen and (width <= 768px) {
+    flex-direction: column;
+  }
+
+  .singlePicture {
+    @include imageContainer;
+    grid-column: 1 / 2;
+    position: relative;
+  }
+
+  .content {
+    @include flexLayout(space-between);
+    @include baseContainer;
+    height: 100%;
+    grid-column: 2 / -1;
+    flex-direction: column;
+
+    .main {
+      @include textOverflow(3);
+      margin-bottom: 8px;
+    }
+
+    .otherInformation {
+      @include commonInformation;
+      @include baseContainer;
+      margin-top: auto;
+
+      > div:first-child {
+        @include textOverflow;
+        min-width: 0;
+        flex: 1;
+      }
+    }
+  }
+}
+
+.multiPicture {
+  @include baseContainer;
+
+  .pictures {
+    @include imageGrid;
+    margin-bottom: 12px;
+
+    > div {
+      @include imageContainer;
+      position: relative;
+    }
+  }
+}
+
+.videoContainer {
+  @include baseContainer;
+
+  .videoStyle {
+    width: 100%;
+    max-height: 400px;
+    @media screen and (width <= 768px) {
+      max-height: 300px;
+    }
+    @media screen and (width <= 480px) {
+      max-height: 200px;
+    }
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.setSinglePicture,
+.setMultiPicture,
+.setSingleVideo,
+.setOnlyText {
+  flex-direction: column;
 }
