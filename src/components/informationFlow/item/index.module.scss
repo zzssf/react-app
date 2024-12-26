@@ -2,6 +2,7 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  margin-top: 8px;
   font-size: 12px;
   color: #969799;
 
@@ -10,24 +11,28 @@
   }
 
   .iconContainer {
-    display: inline-flex;
+    display: flex;
     justify-content: center;
     align-items: center;
-    border-radius: 20px / 15px; /* 椭圆形的半径，水平半径大于垂直半径 */
-    width: 20px;
-    height: 15px;
+    overflow: hidden;
+    border-radius: 50%;
+    width: 16px;
+    height: 16px;
     background-color: #f6f6f6;
+    cursor: pointer;
 
     .icon {
-      width: 8px;
-      height: 8px;
-      fill: white;
+      width: 10px;
+      height: 10px;
+      color: #999999;
+      flex-shrink: 0;
     }
   }
 }
 
 @mixin imageContainer {
   position: relative;
+  overflow: hidden;
   padding-bottom: 100%;
   width: 100%;
   height: 0;
@@ -87,16 +92,37 @@
 
     .singlePicture {
       @include imageContainer;
+      grid-column: 1 / 2;
 
-      /* stylelint-disable-next-line no-invalid-double-slash-comments */
-      grid-column: 1 / 2; // 只占第一列
+      .imageWrapper {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
 
-      :global {
-        .adm-image {
-          @include imageStyle;
+        .placeholder {
+          width: 100%;
+          height: 100%;
+          background: #f5f5f5;
+        }
 
-          &-img {
-            @include imageStyle;
+        .actualImage {
+          width: 100%;
+          height: 100%;
+
+          /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+          :global {
+            .adm-image {
+              width: 100%;
+              height: 100%;
+
+              &-img {
+                width: 100%;
+                height: 100%;
+                object-fit: cover;
+              }
+            }
           }
         }
       }
@@ -117,13 +143,35 @@
       > div {
         @include imageContainer;
 
-        /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
-        :global {
-          .adm-image {
-            @include imageStyle;
+        .imageWrapper {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
 
-            &-img {
-              @include imageStyle;
+          .placeholder {
+            width: 100%;
+            height: 100%;
+            background: #f5f5f5;
+          }
+
+          .actualImage {
+            width: 100%;
+            height: 100%;
+
+            /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+            :global {
+              .adm-image {
+                width: 100%;
+                height: 100%;
+
+                &-img {
+                  width: 100%;
+                  height: 100%;
+                  object-fit: cover;
+                }
+              }
             }
           }
         }
@@ -179,6 +227,66 @@
 
       &-img {
         @include imageStyle;
+      }
+    }
+  }
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.placeholder {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  background: #f5f5f5;
+
+  &::after {
+    border: 2px solid #e8e8e8;
+    border-top-color: #999999;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+    content: '';
+    animation: rotate 0.8s linear infinite;
+  }
+}
+
+.imageWrapper {
+  position: relative;
+  width: 100%;
+  height: 100%;
+
+  .actualImage {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+
+    /* stylelint-disable-next-line selector-pseudo-class-no-unknown */
+    :global {
+      .adm-image {
+        width: 100%;
+        height: 100%;
+
+        &-img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
       }
     }
   }

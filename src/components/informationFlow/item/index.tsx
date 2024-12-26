@@ -9,6 +9,20 @@ import { ItemType } from 'src/type/informationFlow'
 import styles from './index.module.scss'
 
 const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileType, video }) => {
+  // 渲染图片的函数
+  const renderImage = (src: string) => (
+    <div className={styles.imageWrapper}>
+      <Image
+        src={src}
+        fit="cover"
+        lazy
+        className={styles.actualImage}
+        placeholder={<div className={styles.placeholder} />}
+        fallback={<div className={styles.placeholder} />}
+      />
+    </div>
+  )
+
   const relativeInformation = useMemo(() => {
     return (
       <div className={styles.otherInformation}>
@@ -28,9 +42,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
       [
         EFileType.SINGLE_PICTURE,
         <div className={styles.singleContainer} key={fileType}>
-          <div className={styles.singlePicture}>
-            <Image src={image?.[0] || ''} fit="cover" />
-          </div>
+          <div className={styles.singlePicture}>{renderImage(image?.[0] || '')}</div>
           <div className={styles.content}>
             <Ellipsis
               className={styles.main}
@@ -49,9 +61,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
         <div className={styles.multiPicture} key={fileType}>
           <div className={styles.pictures}>
             {image?.map((imageUrl, key) => (
-              <div key={key}>
-                <Image src={imageUrl || ''} fit="cover" />
-              </div>
+              <div key={key}>{renderImage(imageUrl)}</div>
             ))}
           </div>
           {relativeInformation}

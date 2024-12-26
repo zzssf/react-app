@@ -1,0 +1,61 @@
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@mixin skeletonBase {
+  background: linear-gradient(90deg, #f0f0f0 25%, #f8f8f8 37%, #f0f0f0 63%);
+  background-size: 200% 100%;
+  animation: shimmer 1.4s ease infinite;
+}
+
+.skeleton {
+  margin: 12px;
+  border-radius: 8px;
+  padding: 16px;
+  background: #ffffff;
+
+  .title {
+    @include skeletonBase;
+    margin-bottom: 16px;
+    width: 60%;
+    height: 24px;
+  }
+
+  .imageContainer {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+    margin: 16px 0;
+
+    .image {
+      @include skeletonBase;
+      position: relative;
+      padding-bottom: 100%;
+      width: 100%;
+    }
+  }
+
+  .info {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 12px;
+
+    .author {
+      @include skeletonBase;
+      width: 80px;
+      height: 16px;
+    }
+
+    .comment {
+      @include skeletonBase;
+      width: 40px;
+      height: 16px;
+    }
+  }
+}

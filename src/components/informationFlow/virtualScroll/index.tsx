@@ -16,9 +16,11 @@ export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, 
   const containerRef = useRef<HTMLDivElement>(null)
   const [pullDistance, setPullDistance] = useState(0)
   const [isRefreshing, setIsRefreshing] = useState(false)
+  const [isLoadingMore, setIsLoadingMore] = useState(false)
   const touchStartY = useRef(0)
   const initialScrollTop = useRef(0)
 
+  // 处理下拉刷新
   const handleTouchStart = (e: TouchEvent) => {
     if (containerRef.current) {
       touchStartY.current = e.touches[0].clientY
@@ -35,17 +37,35 @@ export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, 
 
     if (scrollTop <= 0 && distance > 0) {
       e.preventDefault()
-      setPullDistance(Math.pow(distance, 0.8)) // 添加阻尼效果
+      // 减小下拉距离，增加阻尼效果
+      setPullDistance(Math.pow(distance, 0.7) * 0.6)
     }
   }
 
   const handleTouchEnd = async () => {
-    if (pullDistance > 50 && !isRefreshing && pullDownRefresh) {
+    if (pullDistance > 30 && !isRefreshing && pullDownRefresh) {
       setIsRefreshing(true)
       await pullDownRefresh()
       setIsRefreshing(false)
     }
     setPullDistance(0)
+  }
+
+  // 处理上拉加载更多
+  const handleScroll = async () => {
+    if (!containerRef.current || !loadMore || isLoadingMore || !hasMore) return
+
+    const { scrollTop, clientHeight, scrollHeight } = containerRef.current
+    const threshold = 50 // 距离底部多少像素时触发加载
+
+    if (scrollHeight - (scrollTop + clientHeight) < threshold) {
+      setIsLoadingMore(true)
+      try {
+        await loadMore()
+      } finally {
+        setIsLoadingMore(false)
+      }
+    }
   }
 
   useEffect(() => {
@@ -54,6 +74,7 @@ export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, 
       container.addEventListener('touchstart', handleTouchStart)
       container.addEventListener('touchmove', handleTouchMove, { passive: false })
       container.addEventListener('touchend', handleTouchEnd)
+      container.addEventListener('scroll', handleScroll)
     }
 
     return () => {
@@ -61,9 +82,10 @@ export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, 
         container.removeEventListener('touchstart', handleTouchStart)
         container.removeEventListener('touchmove', handleTouchMove)
         container.removeEventListener('touchend', handleTouchEnd)
+        container.removeEventListener('scroll', handleScroll)
       }
     }
-  }, [pullDistance, isRefreshing])
+  }, [pullDistance, isRefreshing, isLoadingMore, hasMore])
 
   return (
     <div className={styles.virtualScrollContainer} ref={containerRef}>
@@ -78,6 +100,16 @@ export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, 
         {data.map((item, index) => (
           <div key={index}>{renderItem(item)}</div>
         ))}
+        {isLoadingMore && (
+          <div className={styles.loadingMore}>
+            <span>加载中...</span>
+          </div>
+        )}
+        {!hasMore && data.length > 0 && (
+          <div className={styles.noMore}>
+            <span>没有更多了</span>
+          </div>
+        )}
       </div>
     </div>
   )
