@@ -67,13 +67,18 @@
   box-sizing: border-box;
 
   .main {
+    display: -webkit-box;
+    overflow: hidden;
     margin-bottom: 12px;
     width: 100%;
     font-size: 16px;
+    text-overflow: ellipsis;
     color: #414143;
     word-wrap: break-word;
     word-break: break-all;
     overflow-wrap: break-word;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     @media screen and (width <= 768px) {
       font-size: 14px;
     }
@@ -113,6 +118,24 @@
       overflow: hidden;
       width: 100%;
       grid-column: 2 / -1;
+
+      .main {
+        display: -webkit-box;
+        overflow: hidden;
+        margin-bottom: 12px;
+        width: 100%;
+        font-size: 16px;
+        text-overflow: ellipsis;
+        color: #414143;
+        word-wrap: break-word;
+        word-break: break-all;
+        overflow-wrap: break-word;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
+        @media screen and (width <= 768px) {
+          font-size: 14px;
+        }
+      }
     }
   }
 

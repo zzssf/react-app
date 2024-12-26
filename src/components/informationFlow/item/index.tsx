@@ -44,14 +44,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
         <div className={styles.singleContainer} key={fileType}>
           <div className={styles.singlePicture}>{renderImage(image?.[0] || '')}</div>
           <div className={styles.content}>
-            <Ellipsis
-              className={styles.main}
-              direction="end"
-              rows={3}
-              content={content || ''}
-              expandText="展开"
-              collapseText="收起"
-            />
+            <div className={styles.main}>{content || ''}</div>
             {relativeInformation}
           </div>
         </div>
@@ -95,16 +88,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
 
   return (
     <div className={containerStyle}>
-      {EFileType.SINGLE_PICTURE !== fileType && (
-        <Ellipsis
-          className={styles.main}
-          direction="end"
-          rows={3}
-          content={content || ''}
-          expandText="展开"
-          collapseText="收起"
-        />
-      )}
+      {EFileType.SINGLE_PICTURE !== fileType && <div className={styles.main}>{content || ''}</div>}
       {renderPicture}
     </div>
   )
