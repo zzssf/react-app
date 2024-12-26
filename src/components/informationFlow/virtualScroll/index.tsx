@@ -1,72 +1,84 @@
-import { memo, useEffect, useRef } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 
-import { DEFAULT_HEIGHT } from 'src/type/constant'
+import PullToRefresh from '../pullToRefresh'
 
-import { VariableSizeList, VariableSizeListRef } from '../variableSizeList'
+import styles from './index.module.scss'
 
-// 列表项组件的类型声明
-interface ItemProps<T> {
-  index: number
-  data: T[]
-  setHeight: (index: number, height: number) => void
-  renderItem: <T>(props: T) => JSX.Element
-}
-
-// 列表项组件
-const Item = memo(<T,>({ index, data, setHeight, renderItem }: ItemProps<T>) => {
-  const itemRef = useRef<HTMLDivElement>(null)
-
-  useEffect(() => {
-    if (itemRef.current) {
-      setHeight(index, itemRef.current.getBoundingClientRect().height)
-    }
-  }, [index])
-
-  return <div ref={itemRef}>{renderItem(data[index])}</div>
-})
-
-Item.displayName = 'Item'
-
-export const VirtualScroll = <T,>(props: {
+interface VirtualScrollProps<T> {
   data: T[]
   loadMore?: () => Promise<void>
   pullDownRefresh?: () => Promise<void>
-  renderItem: <T>(props: T) => JSX.Element
+  renderItem: (item: T) => React.ReactNode
   hasMore?: boolean
-}) => {
-  const { data, loadMore, pullDownRefresh, renderItem, hasMore } = props
-  const listRef = useRef<VariableSizeListRef>(null)
-  const heightsRef = useRef<number[]>([])
-  const itemRefs = useRef<(HTMLDivElement | null)[]>([])
+}
 
-  const getHeight = (index: number): number => {
-    return heightsRef.current[index] || DEFAULT_HEIGHT
-  }
+export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, hasMore }: VirtualScrollProps<T>) {
+  const containerRef = useRef<HTMLDivElement>(null)
+  const [pullDistance, setPullDistance] = useState(0)
+  const [isRefreshing, setIsRefreshing] = useState(false)
+  const touchStartY = useRef(0)
+  const initialScrollTop = useRef(0)
 
-  const setHeight = (index: number, height: number) => {
-    if (heightsRef.current[index] !== height) {
-      heightsRef.current[index] = height
-      listRef.current?.resetHeight()
+  const handleTouchStart = (e: TouchEvent) => {
+    if (containerRef.current) {
+      touchStartY.current = e.touches[0].clientY
+      initialScrollTop.current = containerRef.current.scrollTop
     }
   }
 
+  const handleTouchMove = (e: TouchEvent) => {
+    if (!containerRef.current || isRefreshing) return
+
+    const touchY = e.touches[0].clientY
+    const scrollTop = containerRef.current.scrollTop
+    const distance = touchY - touchStartY.current
+
+    if (scrollTop <= 0 && distance > 0) {
+      e.preventDefault()
+      setPullDistance(Math.pow(distance, 0.8)) // 添加阻尼效果
+    }
+  }
+
+  const handleTouchEnd = async () => {
+    if (pullDistance > 50 && !isRefreshing && pullDownRefresh) {
+      setIsRefreshing(true)
+      await pullDownRefresh()
+      setIsRefreshing(false)
+    }
+    setPullDistance(0)
+  }
+
+  useEffect(() => {
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('touchstart', handleTouchStart)
+      container.addEventListener('touchmove', handleTouchMove, { passive: false })
+      container.addEventListener('touchend', handleTouchEnd)
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('touchstart', handleTouchStart)
+        container.removeEventListener('touchmove', handleTouchMove)
+        container.removeEventListener('touchend', handleTouchEnd)
+      }
+    }
+  }, [pullDistance, isRefreshing])
+
   return (
-    <>
-      <VariableSizeList
-        ref={listRef}
-        itemCount={data.length}
-        getItemHeight={getHeight}
-        itemData={data}
-        loadMore={loadMore}
-        pullDownRefresh={pullDownRefresh}
-        hasMore={hasMore}
+    <div className={styles.virtualScrollContainer} ref={containerRef}>
+      <PullToRefresh distance={pullDistance} loading={isRefreshing} />
+      <div
+        className={styles.content}
+        style={{
+          transform: `translateY(${pullDistance}px)`,
+          transition: pullDistance ? 'none' : 'transform 0.2s ease'
+        }}
       >
-        {({ index, style, data }) => (
-          <div style={style} data-index={index} ref={(el) => (itemRefs.current[index] = el)}>
-            <Item {...{ index, data, setHeight, renderItem }} />
-          </div>
-        )}
-      </VariableSizeList>
-    </>
+        {data.map((item, index) => (
+          <div key={index}>{renderItem(item)}</div>
+        ))}
+      </div>
+    </div>
   )
 }

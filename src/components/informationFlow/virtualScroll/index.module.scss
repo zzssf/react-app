@@ -1,0 +1,11 @@
+.virtualScrollContainer {
+  position: relative;
+  overflow-y: auto;
+  height: 100vh;
+  -webkit-overflow-scrolling: touch;
+}
+
+.content {
+  min-height: 100%;
+  will-change: transform;
+}

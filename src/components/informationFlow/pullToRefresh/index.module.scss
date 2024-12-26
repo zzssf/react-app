@@ -1,0 +1,44 @@
+.refreshContainer {
+  position: absolute;
+  top: 0;
+  right: 0;
+  left: 0;
+  z-index: 10;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  overflow: hidden;
+  background: #ffffff;
+  transition: height 0.2s ease;
+  flex-direction: column;
+}
+
+.refreshIcon {
+  margin-bottom: 8px;
+  width: 24px;
+  height: 24px;
+  transition: transform 0.3s ease;
+
+  svg {
+    fill: #999999;
+  }
+
+  &.loading {
+    animation: rotate 1s linear infinite;
+  }
+}
+
+.refreshText {
+  font-size: 12px;
+  color: #999999;
+}
+
+@keyframes rotate {
+  from {
+    transform: rotate(0deg);
+  }
+
+  to {
+    transform: rotate(360deg);
+  }
+}
