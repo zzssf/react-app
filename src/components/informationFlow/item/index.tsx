@@ -27,31 +27,32 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
     const pictureMaps = new Map<EFileType, JSX.Element>([
       [
         EFileType.SINGLE_PICTURE,
-        <>
-          <div className={styles.singleContainer}>
-            <Image src={image?.[0] || ''} className={[styles.singlePicture, styles.setRightMargin].join(' ')} />
-            <div className={styles.content}>
-              <Ellipsis
-                className={styles.main}
-                direction="end"
-                rows={3}
-                content={content || ''}
-                expandText="展开"
-                collapseText="收起"
-              />
-              {relativeInformation}
-            </div>
+        <div className={styles.singleContainer} key={fileType}>
+          <div className={styles.singlePicture}>
+            <Image src={image?.[0] || ''} fit="cover" />
           </div>
-        </>
+          <div className={styles.content}>
+            <Ellipsis
+              className={styles.main}
+              direction="end"
+              rows={3}
+              content={content || ''}
+              expandText="展开"
+              collapseText="收起"
+            />
+            {relativeInformation}
+          </div>
+        </div>
       ],
       [
         EFileType.MULTI_PICTURE,
         <div className={styles.multiPicture} key={fileType}>
           <div className={styles.pictures}>
             {image?.map((imageUrl, key) => (
-              <Image src={imageUrl || ''} key={key} className={styles.imageStyle} />
+              <div key={key}>
+                <Image src={imageUrl || ''} fit="cover" />
+              </div>
             ))}
-            {image?.length === 2 && <div className={styles.placeholder} />}
           </div>
           {relativeInformation}
         </div>
