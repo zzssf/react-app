@@ -1,26 +1,138 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useEffect, useRef, useState } from 'react'
 
-import { Image } from 'antd-mobile'
+import { Image, ImageProps } from 'antd-mobile'
 import { CloseOutline } from 'antd-mobile-icons'
 
 import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
+import { preloadImage } from 'src/utils/imageOptimizer'
 
 import styles from './index.module.scss'
 
+// 添加图片尺寸优化工具
+const getOptimizedImageUrl = (url: string, width: number, height: number) => {
+  try {
+    const urlObj = new URL(url)
+    // 添加尺寸参数
+    urlObj.searchParams.set('w', width.toString())
+    urlObj.searchParams.set('h', height.toString())
+    urlObj.searchParams.set('fit', 'crop') // 裁剪模式
+    urlObj.searchParams.set('auto', 'format') // 自动格式化
+    urlObj.searchParams.set('q', '80') // 设置质量
+    return urlObj.toString()
+  } catch {
+    return url
+  }
+}
+
 // 提取图片渲染组件
-const ImageRenderer = ({ src }: { src: string }) => (
-  <div className={styles.imageWrapper}>
-    <Image
-      src={src}
-      fit="cover"
-      lazy
-      className={styles.actualImage}
-      placeholder={<div className={styles.placeholder} />}
-      fallback={<div className={styles.placeholder} />}
-    />
-  </div>
-)
+const ImageRenderer = ({ src }: { src: string }) => {
+  const [isLoaded, setIsLoaded] = useState(false)
+  const [isInView, setIsInView] = useState(false)
+  const [optimizedSrc, setOptimizedSrc] = useState('')
+  const imageRef = useRef<HTMLDivElement>(null)
+
+  // 计算容器尺寸并优化图片URL
+  useEffect(() => {
+    if (imageRef.current) {
+      const updateImageSize = () => {
+        const rect = imageRef.current?.getBoundingClientRect()
+        if (rect) {
+          // 获取实际渲染尺寸，考虑设备像素比
+          const dpr = window.devicePixelRatio || 1
+          const width = Math.round(rect.width * dpr)
+          const height = Math.round(rect.height * dpr)
+          // 优化图片URL
+          const optimized = getOptimizedImageUrl(src, width, height)
+          setOptimizedSrc(optimized)
+        }
+      }
+
+      // 初始计算
+      updateImageSize()
+
+      // 监听窗口大小变化
+      const resizeObserver = new ResizeObserver(updateImageSize)
+      resizeObserver.observe(imageRef.current)
+
+      return () => {
+        resizeObserver.disconnect()
+      }
+    }
+  }, [src])
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setIsInView(true)
+            observer.unobserve(entry.target)
+          }
+        })
+      },
+      {
+        rootMargin: '100px 0px',
+        threshold: 0.1
+      }
+    )
+
+    if (imageRef.current) {
+      observer.observe(imageRef.current)
+    }
+
+    return () => {
+      if (imageRef.current) {
+        observer.unobserve(imageRef.current)
+      }
+    }
+  }, [])
+
+  useEffect(() => {
+    if (isInView && optimizedSrc) {
+      const loadImage = async () => {
+        try {
+          await preloadImage(optimizedSrc)
+          setIsLoaded(true)
+        } catch (error) {
+          console.error('Image load failed:', error)
+          // 如果优化的URL加载失败，尝试加载原始URL
+          try {
+            await preloadImage(src)
+            setIsLoaded(true)
+          } catch (fallbackError) {
+            console.error('Fallback image load failed:', fallbackError)
+          }
+        }
+      }
+      loadImage()
+    }
+  }, [isInView, optimizedSrc, src])
+
+  return (
+    <div ref={imageRef} className={styles.imageWrapper}>
+      {isInView && (
+        <Image
+          src={optimizedSrc || src}
+          fit="cover"
+          lazy={false}
+          className={`${styles.actualImage} ${isLoaded ? styles.loaded : ''}`}
+          placeholder={<div className={styles.placeholder} />}
+          fallback={<div className={styles.placeholder} />}
+          onLoad={() => setIsLoaded(true)}
+          onError={() => {
+            console.error('Image load error:', optimizedSrc)
+            // 如果优化的URL加载失败，回退到原始URL
+            if (optimizedSrc !== src) {
+              setOptimizedSrc(src)
+            }
+          }}
+        />
+      )}
+      {!isInView && <div className={styles.placeholder} />}
+    </div>
+  )
+}
 
 // 提取作者信息组件
 const AuthorInfo = ({ author, comment }: { author: string; comment: string }) => (
