@@ -30,9 +30,9 @@
     "build": "react-scripts build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "lint": "eslint --ext .tsx,.js,.jsx,.ts src",
+    "lint": "eslint src --ext .ts,.tsx,.js,.jsx --fix && stylelint \"src/**/*.{css,scss}\" --fix",
     "lint-fix": "eslint --fix  --ext .tsx,.js,.jsx,.ts src",
-    "lint:style": "stylelint \"src/**/*.(scss|css)\" --fix",
+    "lint:style": "stylelint \"src/**/*.{css,scss}\" --fix",
     "commitlint": "commitlint --config commitlint.config.js -e -V",
     "prepare": "husky install"
   },
@@ -70,11 +70,14 @@
     "http-proxy-middleware": "^3.0.0",
     "husky": "^8.0.0",
     "lint-staged": "^15.2.5",
+    "postcss": "^8.4.49",
     "prettier": "2.8.8",
     "sass": "^1.77.2",
     "sass-loader": "^14.2.1",
     "stylelint": "^16.6.1",
+    "stylelint-config-prettier-scss": "^1.0.0",
     "stylelint-config-standard": "^36.0.0",
+    "stylelint-config-standard-scss": "^14.0.0",
     "stylelint-order": "^6.0.4"
   },
   "lint-staged": {

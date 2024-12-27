@@ -8,7 +8,7 @@
   justify-content: center;
   align-items: center;
   overflow: hidden;
-  background: #ffffff;
+  background: #fff;
   transition: height 0.2s ease;
   flex-direction: column;
 }
@@ -20,7 +20,7 @@
   transition: transform 0.3s ease;
 
   svg {
-    fill: #999999;
+    fill: #999;
   }
 
   &.loading {
@@ -30,7 +30,7 @@
 
 .refreshText {
   font-size: 12px;
-  color: #999999;
+  color: #999;
 }
 
 @keyframes rotate {

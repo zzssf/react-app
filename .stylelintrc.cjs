@@ -1,119 +1,39 @@
 module.exports = {
-  extends: ['stylelint-config-standard'],
-  plugins: ['stylelint-order'],
+  extends: [
+    'stylelint-config-standard-scss',
+    'stylelint-config-prettier-scss'
+  ],
   rules: {
-    'comment-empty-line-before': ['always', { except: ['first-nested'] }],
-    'at-rule-empty-line-before': [
-      'always',
-      {
-        except: ['inside-block']
-      }
-    ],
-    'rule-empty-line-before': [
-      'always',
-      {
-        except: ['first-nested'],
-        ignore: ['after-comment']
-      }
-    ],
-    'custom-property-no-missing-var-function': true,
-    'no-irregular-whitespace': true,
-    'string-no-newline': true,
-    'color-no-invalid-hex': true,
-    'declaration-empty-line-before': 'never',
-    'selector-class-pattern': null,
-    'block-no-empty': true,
-    'color-hex-length': 'long',
-    'selector-type-no-unknown': [
+    'selector-pseudo-class-no-unknown': [
       true,
       {
-        ignoreTypes: []
+        ignorePseudoClasses: ['global', 'export']
+      }
+    ],
+    'property-no-unknown': [
+      true,
+      {
+        ignoreProperties: ['composes']
       }
     ],
     'no-descending-specificity': null,
+    'no-invalid-double-slash-comments': null,
+    'selector-class-pattern': null,
+    'custom-property-pattern': null,
+    'keyframes-name-pattern': null,
+    'scss/dollar-variable-pattern': null,
+    'scss/at-mixin-pattern': null,
+    'value-keyword-case': [
+      'lower',
+      {
+        ignoreFunctions: ['var']
+      }
+    ],
     'at-rule-no-unknown': null,
-    'comment-no-empty': true,
-    'shorthand-property-no-redundant-values': true,
-    'value-no-vendor-prefix': true,
-    'property-no-vendor-prefix': true,
-    'order/properties-order': [
-      'position',
-      'top',
-      'right',
-      'bottom',
-      'left',
-      'z-index',
-      'display',
-      'justify-content',
-      'align-items',
-      'float',
-      'clear',
-      'overflow',
-      'overflow-x',
-      'overflow-y',
-      'margin',
-      'margin-top',
-      'margin-right',
-      'margin-bottom',
-      'margin-left',
-      'border',
-      'border-style',
-      'border-width',
-      'border-color',
-      'border-top',
-      'border-top-style',
-      'border-top-width',
-      'border-top-color',
-      'border-right',
-      'border-right-style',
-      'border-right-width',
-      'border-right-color',
-      'border-bottom',
-      'border-bottom-style',
-      'border-bottom-width',
-      'border-bottom-color',
-      'border-left',
-      'border-left-style',
-      'border-left-width',
-      'border-left-color',
-      'border-radius',
-      'padding',
-      'padding-top',
-      'padding-right',
-      'padding-bottom',
-      'padding-left',
-      'width',
-      'min-width',
-      'max-width',
-      'height',
-      'min-height',
-      'max-height',
-      'font-size',
-      'font-family',
-      'font-weight',
-      'text-align',
-      'text-justify',
-      'text-indent',
-      'text-overflow',
-      'text-decoration',
-      'white-space',
-      'color',
-      'background',
-      'background-position',
-      'background-repeat',
-      'background-size',
-      'background-color',
-      'background-clip',
-      'opacity',
-      'filter',
-      'list-style',
-      'outline',
-      'visibility',
-      'box-shadow',
-      'text-shadow',
-      'resize',
-      'transition'
-    ]
-  },
-  ignoreFiles: ['dist/**/*', 'node_modules/**/*']
+    'scss/at-rule-no-unknown': true,
+    'declaration-empty-line-before': null,
+    'custom-property-empty-line-before': null,
+    'rule-empty-line-before': null,
+    'scss/double-slash-comment-empty-line-before': null
+  }
 }
