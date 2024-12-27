@@ -1,6 +1,6 @@
 import React, { useMemo, useEffect, useRef, useState } from 'react'
 
-import { Image, ImageProps } from 'antd-mobile'
+import { Image } from 'antd-mobile'
 import { CloseOutline } from 'antd-mobile-icons'
 
 import { EFileType } from 'src/type/enum'
@@ -9,11 +9,10 @@ import { preloadImage } from 'src/utils/imageOptimizer'
 
 import styles from './index.module.scss'
 
-// 添加图片尺寸优化工具
+// 优化图片URL工具函数
 const getOptimizedImageUrl = (url: string, width: number, height: number) => {
   try {
     const urlObj = new URL(url)
-    // 添加尺寸参数
     urlObj.searchParams.set('w', width.toString())
     urlObj.searchParams.set('h', height.toString())
     urlObj.searchParams.set('fit', 'crop') // 裁剪模式
@@ -25,7 +24,7 @@ const getOptimizedImageUrl = (url: string, width: number, height: number) => {
   }
 }
 
-// 提取图片渲染组件
+// 图片渲染组件
 const ImageRenderer = ({ src }: { src: string }) => {
   const [isLoaded, setIsLoaded] = useState(false)
   const [isInView, setIsInView] = useState(false)
@@ -50,14 +49,11 @@ const ImageRenderer = ({ src }: { src: string }) => {
 
       // 初始计算
       updateImageSize()
-
       // 监听窗口大小变化
       const resizeObserver = new ResizeObserver(updateImageSize)
       resizeObserver.observe(imageRef.current)
 
-      return () => {
-        resizeObserver.disconnect()
-      }
+      return () => resizeObserver.disconnect()
     }
   }, [src])
 
@@ -81,11 +77,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
       observer.observe(imageRef.current)
     }
 
-    return () => {
-      if (imageRef.current) {
-        observer.unobserve(imageRef.current)
-      }
-    }
+    return () => observer.disconnect()
   }, [])
 
   useEffect(() => {
