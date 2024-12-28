@@ -40,7 +40,6 @@
   will-change: transform, opacity;
   transform: translateZ(0);
   backface-visibility: hidden;
-  aspect-ratio: 1;
 
   .actualImage {
     @include absolute-full;
@@ -183,6 +182,11 @@
   @include optimize-image;
 }
 
+.userProfile {
+  padding: 0;
+  margin-bottom: $gap-xs;
+}
+
 .contentWrapper {
   @include base-container;
   display: flex;
@@ -199,13 +203,23 @@
 
   .profileImage {
     @include image-container;
-    aspect-ratio: 4/3;
+    width: 50%;
+    padding-bottom: 37.5%;
     border-radius: $border-radius-lg;
     overflow: hidden;
-  }
-}
 
-.userProfile {
-  padding: 0;
-  margin-bottom: $gap-xs;
+    .imageWrapper {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+
+      .actualImage {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+    }
+  }
 }

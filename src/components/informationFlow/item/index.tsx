@@ -200,7 +200,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
       ),
       [EFileType.IS_ONLY_TEXT]: <AuthorInfo author={author} comment={comment} />,
       [EFileType.USER_PROFILE]: (
-        <div className={styles.profileContainer}>
+        <>
           {userProfile && (
             <UserProfile
               avatar={userProfile.avatar}
@@ -224,7 +224,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
             onStar={() => console.log('Star clicked')}
             onComment={() => console.log('Comment clicked')}
           />
-        </div>
+        </>
       )
     }
     return contentMap[fileType]

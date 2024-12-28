@@ -17,8 +17,8 @@ export const UserProfile: React.FC<UserProfileProps> = ({ avatar, nickname, isFo
       <Image src={avatar} className={styles.avatar} />
       <span className={styles.nickname}>{nickname}</span>
     </div>
-    <button className={`${styles.followButton} ${isFollowed ? styles.followed : ''}`} onClick={onFollow}>
+    <a className={`${styles.followLink} ${isFollowed ? styles.followed : ''}`} onClick={onFollow}>
       {isFollowed ? '已关注' : '关注'}
-    </button>
+    </a>
   </div>
 )

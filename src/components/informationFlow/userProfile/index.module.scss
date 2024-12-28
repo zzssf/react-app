@@ -24,16 +24,25 @@
     }
   }
 
-  .followButton {
-    @include button-base;
-    padding: $gap-xs $gap-md;
-    background: $color-primary;
-    color: $color-white;
+  .followLink {
+    font-size: $font-size-md;
+    color: $color-font-blued;
+    cursor: pointer;
+    text-decoration: none;
+    padding: $gap-xs $gap-sm;
     border-radius: $border-radius-lg;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: rgba($color-font-blued, 0.1);
+    }
 
     &.followed {
-      background: $color-background;
       color: $color-secondary;
+
+      &:hover {
+        background: rgba($color-secondary, 0.1);
+      }
     }
   }
 }
