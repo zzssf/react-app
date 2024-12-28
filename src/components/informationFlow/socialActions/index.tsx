@@ -1,42 +1,39 @@
 import React from 'react'
 
+import { CloseOutline, HeartOutline, StarOutline, MessageOutline } from 'antd-mobile-icons'
+
 import styles from './index.module.scss'
 
 interface SocialActionsProps {
   likes?: string
   stars?: string
   comments?: string
-  onShare?: () => void
-  onLike?: () => void
-  onStar?: () => void
-  onComment?: () => void
 }
 
-export const SocialActions: React.FC<SocialActionsProps> = ({
-  likes = '190',
-  stars = '392',
-  comments = '14',
-  onShare,
-  onLike,
-  onStar,
-  onComment
-}) => (
+export const SocialActions: React.FC<SocialActionsProps> = ({ likes = '190', stars = '392', comments = '14' }) => (
   <div className={styles.socialActions}>
-    <div className={styles.actionItem} onClick={onShare}>
-      <i className={styles.shareIcon} />
-      <span>分享</span>
+    <div className={styles.actionGroup}>
+      <span className={styles.actionItem}>
+        <svg className={styles.actionIcon} viewBox="0 0 24 24" fill="currentColor">
+          <path d="M13.12 17.023l-4.199-2.29a4 4 0 1 1 0-5.465l4.2-2.29a4 4 0 1 1 .959 1.755l-4.2 2.29a4.008 4.008 0 0 1 0 1.954l4.199 2.29a4 4 0 1 1-.959 1.755zM6 14a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm11-6a2 2 0 1 0 0-4 2 2 0 0 0 0 4zm0 12a2 2 0 1 0 0-4 2 2 0 0 0 0 4z" />
+        </svg>
+        分享
+      </span>
+      <span className={styles.actionItem}>
+        <HeartOutline className={styles.actionIcon} />
+        {likes}
+      </span>
+      <span className={styles.actionItem}>
+        <StarOutline className={styles.actionIcon} />
+        {stars}
+      </span>
+      <span className={styles.actionItem}>
+        <MessageOutline className={styles.actionIcon} />
+        {comments}
+      </span>
     </div>
-    <div className={styles.actionItem} onClick={onLike}>
-      <i className={styles.likeIcon} />
-      <span>{likes}</span>
-    </div>
-    <div className={styles.actionItem} onClick={onStar}>
-      <i className={styles.starIcon} />
-      <span>{stars}</span>
-    </div>
-    <div className={styles.actionItem} onClick={onComment}>
-      <i className={styles.commentIcon} />
-      <span>{comments}</span>
+    <div className={styles.iconContainer}>
+      <CloseOutline className={styles.icon} />
     </div>
   </div>
 )

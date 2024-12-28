@@ -119,7 +119,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
           onLoad={() => setIsLoaded(true)}
           onError={() => {
             console.error('Image load error:', optimizedSrc)
-            // 如果优化的URL加载失败，回退到原始URL
+            // 如果优化的URL加载��败，回退到原始URL
             if (optimizedSrc !== src) {
               setOptimizedSrc(src)
             }
@@ -160,7 +160,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
     return styleMap[fileType]
   }, [fileType])
 
-  // 渲染内容
+  // 渲染���容
   const renderContent = useMemo(() => {
     const contentMap = {
       [EFileType.SINGLE_PICTURE]: (
@@ -217,13 +217,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
               </div>
             )}
           </div>
-          <SocialActions
-            comments={comment}
-            onShare={() => console.log('Share clicked')}
-            onLike={() => console.log('Like clicked')}
-            onStar={() => console.log('Star clicked')}
-            onComment={() => console.log('Comment clicked')}
-          />
+          <SocialActions likes="190" stars="392" comments={comment} />
         </>
       )
     }
