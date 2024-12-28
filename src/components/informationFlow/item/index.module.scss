@@ -1,129 +1,9 @@
 /* stylelint-disable-next-line scss/load-partial-extension */
 @import '../../../styles/variables.scss';
 
-// 先定义变量，再使用
-$color-primary: #414143;
-$color-secondary: #969799;
-$color-border: #f7f0f0;
-$color-background: #f5f5f5;
-$color-icon: #999;
-$color-icon-bg: #f6f6f6;
-$color-loading-border: #e8e8e8;
-
-// 尺寸变量
-$spacing-xs: 8px;
-$spacing-sm: 12px;
-$spacing-md: 16px;
-$spacing-lg: 24px;
-
-// 图标尺寸
-$icon-size-sm: 10px;
-$icon-size-md: 16px;
-$icon-size-lg: 24px;
-
-// 字体大小
-$font-size-sm: 12px;
-$font-size-md: 14px;
-$font-size-lg: 16px;
-
-// 容器尺寸
-$container-max-width: 800px;
-$video-height-lg: 400px;
-$video-height-md: 300px;
-$video-height-sm: 200px;
-
-// 动画时间
-$animation-duration: 0.8s;
-
-/* stylelint-disable-next-line no-invalid-double-slash-comments */
-// 基础布局混入
-@mixin flexLayout($justify: center, $align: center) {
-  display: flex;
-  justify-content: $justify;
-  align-items: $align;
-}
-
-/* stylelint-disable-next-line no-invalid-double-slash-comments */
-// 定位混入
-@mixin absoluteFull {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-}
-
-/* stylelint-disable-next-line no-invalid-double-slash-comments */
-// 文本溢出混入
-@mixin textOverflow($lines: 1) {
-  overflow: hidden;
-  text-overflow: ellipsis;
-  @if $lines == 1 {
-    white-space: nowrap;
-  } @else {
-    display: -webkit-box;
-    -webkit-line-clamp: $lines;
-    -webkit-box-orient: vertical;
-    word-wrap: break-word;
-    word-break: break-all;
-    overflow-wrap: break-word;
-  }
-}
-
-/* stylelint-disable-next-line no-invalid-double-slash-comments */
-// 基础容器混入
-@mixin baseContainer {
-  overflow: hidden;
-  width: 100%;
-}
-
-@mixin commonInformation {
-  @include flexLayout(space-between);
-  margin-top: $spacing-xs;
-  font-size: $font-size-sm;
-  color: $color-secondary;
-
-  span:nth-child(1) {
-    margin-right: $spacing-xs;
-  }
-
-  .iconContainer {
-    @include flexLayout;
-    overflow: hidden;
-    border-radius: 50%;
-    width: $icon-size-md;
-    height: $icon-size-md;
-    background-color: $color-icon-bg;
-    cursor: pointer;
-
-    .icon {
-      width: $icon-size-sm;
-      height: $icon-size-sm;
-      color: $color-icon;
-      flex-shrink: 0;
-    }
-  }
-}
-
-@mixin imageContainer {
-  position: relative;
-  overflow: hidden;
-  padding-bottom: 100%;
-  width: 100%;
-  height: 0;
-  background: $color-background;
-}
-
-@mixin imageGrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
-  width: 100%;
-}
-
 .container {
-  @include flexLayout(flex-start, flex-start);
-  @include baseContainer;
+  @include flex-center;
+  @include base-container;
   margin: 0 auto;
   border-bottom: 1px solid $color-border;
   padding: $spacing-sm;
@@ -132,7 +12,7 @@ $animation-duration: 0.8s;
   box-sizing: border-box;
 
   .main {
-    @include textOverflow(3);
+    @include text-overflow(3);
     margin-bottom: $spacing-sm;
     width: 100%;
     font-size: $font-size-lg;
@@ -143,11 +23,11 @@ $animation-duration: 0.8s;
   }
 
   .otherInformation {
-    @include commonInformation;
-    @include baseContainer;
+    @include common-information;
+    @include base-container;
 
     > div:first-child {
-      @include textOverflow;
+      @include text-overflow;
       min-width: 0;
       flex: 1;
     }
@@ -155,7 +35,7 @@ $animation-duration: 0.8s;
 }
 
 .imageWrapper {
-  @include absoluteFull;
+  @include absolute-full;
   contain: content;
   will-change: transform, opacity;
   transform: translateZ(0);
@@ -163,7 +43,7 @@ $animation-duration: 0.8s;
   aspect-ratio: 1;
 
   .actualImage {
-    @include absoluteFull;
+    @include absolute-full;
     opacity: 0;
     transition: opacity 0.2s ease;
     transform: translateZ(0);
@@ -191,8 +71,8 @@ $animation-duration: 0.8s;
 }
 
 .placeholder {
-  @include absoluteFull;
-  @include flexLayout;
+  @include absolute-full;
+  @include flex-center;
   background: $color-background;
   transform: translateZ(0);
 
@@ -208,39 +88,39 @@ $animation-duration: 0.8s;
 }
 
 .singleContainer {
-  @include flexLayout(flex-start, flex-start);
-  @include baseContainer;
-  @include imageGrid;
+  @include flex-center;
+  @include base-container;
+  @include image-grid;
   @media screen and (width <= 768px) {
     flex-direction: column;
   }
 
   .singlePicture {
-    @include imageContainer;
+    @include image-container;
     aspect-ratio: 4/3;
     grid-column: 1 / 2;
     position: relative;
   }
 
   .content {
-    @include flexLayout(space-between);
-    @include baseContainer;
+    @include flex-between;
+    @include base-container;
     height: 100%;
     grid-column: 2 / -1;
     flex-direction: column;
 
     .main {
-      @include textOverflow(3);
+      @include text-overflow(3);
       margin-bottom: 8px;
     }
 
     .otherInformation {
-      @include commonInformation;
-      @include baseContainer;
+      @include common-information;
+      @include base-container;
       margin-top: auto;
 
       > div:first-child {
-        @include textOverflow;
+        @include text-overflow;
         min-width: 0;
         flex: 1;
       }
@@ -249,14 +129,14 @@ $animation-duration: 0.8s;
 }
 
 .multiPicture {
-  @include baseContainer;
+  @include base-container;
 
   .pictures {
-    @include imageGrid;
+    @include image-grid;
     margin-bottom: $spacing-sm;
 
     > div {
-      @include imageContainer;
+      @include image-container;
       aspect-ratio: 1;
       position: relative;
     }
@@ -292,7 +172,7 @@ $animation-duration: 0.8s;
 }
 
 // 添加图片预加载样式
-@mixin optimizeImage {
+@mixin optimize-image {
   content-visibility: auto;
   contain: content;
   will-change: transform;
@@ -300,5 +180,5 @@ $animation-duration: 0.8s;
 
 .singlePicture,
 .multiPicture .pictures > div {
-  @include optimizeImage;
+  @include optimize-image;
 }

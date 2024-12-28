@@ -1,30 +1,57 @@
 // 颜色变量
+$color-primary: #414143;
+$color-secondary: #969799;
+$color-border: #f7f0f0;
 $color-background: #f5f5f5;
+$color-icon: #999;
+$color-icon-bg: #f6f6f6;
+$color-loading-border: #e8e8e8;
 $color-white: #fff;
 $color-black-50: rgb(0 0 0 / 50%);
 
 // 布局变量
 $border-radius-lg: 8px;
-$spacing-xs: 4px;
-$spacing-sm: 8px;
-$spacing-md: 12px;
-$spacing-lg: 16px;
+$spacing-xs: 8px;
+$spacing-sm: 12px;
+$spacing-md: 16px;
+$spacing-lg: 24px;
+
+// gap
+$gap-xs: 4px;
+$gap-sm: 8px;
+$gap-md: 12px;
+$gap-lg: 16px;
+
+// 容器尺寸
+$container-max-width: 800px;
+$video-height-lg: 400px;
+$video-height-md: 300px;
+$video-height-sm: 200px;
+
+// 图标尺寸
+$icon-size-sm: 10px;
+$icon-size-md: 16px;
+$icon-size-lg: 24px;
 
 // 字体大小
 $font-size-sm: 12px;
 $font-size-md: 14px;
 $font-size-lg: 16px;
 
-// 图标尺寸
-$icon-size-sm: 16px;
-$icon-size-md: 24px;
-$icon-size-lg: 48px;
+// 动画时间
+$animation-duration: 0.8s;
 
-// 混入
+// 基础混入
 @mixin flex-center {
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+@mixin flex-between {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 @mixin absolute-full {
@@ -42,9 +69,91 @@ $icon-size-lg: 48px;
   transform: translate(-50%, -50%);
 }
 
+@mixin text-overflow($lines: 1) {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  @if $lines == 1 {
+    white-space: nowrap;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+    word-wrap: break-word;
+    word-break: break-all;
+    overflow-wrap: break-word;
+  }
+}
+
+@mixin base-container {
+  overflow: hidden;
+  width: 100%;
+}
+
+@mixin common-information {
+  @include flex-between;
+  margin-top: $spacing-xs;
+  font-size: $font-size-sm;
+  color: $color-secondary;
+
+  span:nth-child(1) {
+    margin-right: $spacing-xs;
+  }
+
+  .iconContainer {
+    @include flex-center;
+    overflow: hidden;
+    border-radius: 50%;
+    width: $icon-size-md;
+    height: $icon-size-md;
+    background-color: $color-icon-bg;
+    cursor: pointer;
+
+    .icon {
+      width: $icon-size-sm;
+      height: $icon-size-sm;
+      color: $color-icon;
+      flex-shrink: 0;
+    }
+  }
+}
+
+@mixin image-container {
+  position: relative;
+  overflow: hidden;
+  padding-bottom: 100%;
+  width: 100%;
+  height: 0;
+  background: $color-background;
+}
+
+@mixin image-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  width: 100%;
+}
+
 @mixin video-base {
   width: 100%;
   height: 100%;
   object-fit: cover;
   background: $color-background;
-} 
+}
+
+@mixin button-base {
+  border: none;
+  outline: none;
+  cursor: pointer;
+  font-size: $font-size-sm;
+  transition: all 0.2s ease;
+
+  &:hover {
+    opacity: 0.9;
+  }
+}
+
+@mixin optimize-image {
+  content-visibility: auto;
+  contain: content;
+  will-change: transform;
+}

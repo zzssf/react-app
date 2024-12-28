@@ -7,4 +7,9 @@ export interface ItemType {
   image: string[] | null
   fileType: EFileType
   video: string | null
+  userProfile?: {
+    avatar: string
+    nickname: string
+    isFollowed?: boolean
+  }
 }

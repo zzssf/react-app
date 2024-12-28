@@ -8,6 +8,7 @@ import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 import { preloadImage } from 'src/utils/imageOptimizer'
 
+import { UserProfile } from '../userProfile'
 import { VideoPlayer } from '../videoPlayer'
 
 import styles from './index.module.scss'
@@ -44,7 +45,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
           const dpr = window.devicePixelRatio || 1
           const width = Math.round(rect.width * dpr)
           const height = Math.round(rect.height * dpr)
-          // 优化��片URL
+          // 优化片URL
           const optimized = getOptimizedImageUrl(src, width, height)
           setOptimizedSrc(optimized)
         }
@@ -145,11 +146,12 @@ const AuthorInfo = ({ author, comment }: { author: string; comment: string }) =>
 // 提取内容组件
 const Content = ({ content }: { content: string }) => <div className={styles.main}>{content || ''}</div>
 
-const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileType, video }) => {
+const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileType, video, userProfile }) => {
   // 获取容器样式
   const containerStyle = useMemo(() => {
     const styleMap = {
       [EFileType.SINGLE_PICTURE]: styles.container,
+      [EFileType.USER_PROFILE]: styles.setMultiPicture,
       [EFileType.MULTI_PICTURE]: `${styles.setMultiPicture} ${styles.container}`,
       [EFileType.SINGLE_VIDEO]: `${styles.setSingleVideo} ${styles.container}`,
       [EFileType.IS_ONLY_TEXT]: `${styles.setOnlyText} ${styles.container}`
@@ -195,10 +197,29 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
           <AuthorInfo author={author} comment={comment} />
         </>
       ),
-      [EFileType.IS_ONLY_TEXT]: <AuthorInfo author={author} comment={comment} />
+      [EFileType.IS_ONLY_TEXT]: <AuthorInfo author={author} comment={comment} />,
+      [EFileType.USER_PROFILE]: (
+        <div className={styles.profileContainer}>
+          {userProfile && (
+            <UserProfile
+              avatar={userProfile.avatar}
+              nickname={userProfile.nickname}
+              isFollowed={userProfile.isFollowed}
+              onFollow={() => console.log('Follow clicked')}
+            />
+          )}
+          <Content content={content} />
+          {image?.length === 1 && (
+            <div className={styles.singlePicture}>
+              <ImageRenderer src={image[0]} />
+            </div>
+          )}
+          <AuthorInfo author={author} comment={comment} />
+        </div>
+      )
     }
     return contentMap[fileType]
-  }, [fileType, image, author, comment, content, video])
+  }, [fileType, image, author, comment, content, video, userProfile])
 
   return (
     <div className={containerStyle}>
