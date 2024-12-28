@@ -12,7 +12,13 @@ interface VirtualScrollProps<T> {
   hasMore?: boolean
 }
 
-export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, hasMore }: VirtualScrollProps<T>) {
+export function VirtualScroll<T extends { id: string }>({
+  data,
+  loadMore,
+  pullDownRefresh,
+  renderItem,
+  hasMore
+}: VirtualScrollProps<T>) {
   const containerRef = useRef<HTMLDivElement>(null)
   const [pullDistance, setPullDistance] = useState(0)
   const [isRefreshing, setIsRefreshing] = useState(false)
@@ -107,8 +113,8 @@ export function VirtualScroll<T>({ data, loadMore, pullDownRefresh, renderItem, 
           transition: pullDistance ? 'none' : 'transform 0.2s ease'
         }}
       >
-        {data.map((item, index) => (
-          <div key={index}>{renderItem(item)}</div>
+        {data.map((item) => (
+          <div key={item.id}>{renderItem(item)}</div>
         ))}
         {isLoadingMore && <div className={styles.loadingMore}>加载中...</div>}
         {!hasMore && data.length > 0 && <div className={styles.noMore}>没有更多了</div>}

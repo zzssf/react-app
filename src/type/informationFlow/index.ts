@@ -1,6 +1,7 @@
 import { EFileType } from '../enum'
 
 export interface ItemType {
+  id: string
   content: string
   comment: string
   author: string

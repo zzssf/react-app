@@ -3,7 +3,7 @@
 
 .userProfile {
   @include flex-between;
-  padding: $gap-sm;
+  padding: 0 0 $gap-sm;
   width: 100%;
 
   .userInfo {

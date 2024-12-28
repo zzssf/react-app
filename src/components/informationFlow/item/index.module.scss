@@ -182,3 +182,30 @@
 .multiPicture .pictures > div {
   @include optimize-image;
 }
+
+.contentWrapper {
+  @include base-container;
+  display: flex;
+  flex-direction: column;
+  gap: $gap-sm;
+
+  .main {
+    @include text-overflow(3);
+    margin: 0;
+    font-size: $font-size-md;
+    color: $color-primary;
+    line-height: 1.5;
+  }
+
+  .profileImage {
+    @include image-container;
+    aspect-ratio: 4/3;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+  }
+}
+
+.userProfile {
+  padding: 0;
+  margin-bottom: $gap-xs;
+}

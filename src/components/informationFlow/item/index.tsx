@@ -8,6 +8,7 @@ import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 import { preloadImage } from 'src/utils/imageOptimizer'
 
+import { SocialActions } from '../socialActions'
 import { UserProfile } from '../userProfile'
 import { VideoPlayer } from '../videoPlayer'
 
@@ -151,7 +152,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
   const containerStyle = useMemo(() => {
     const styleMap = {
       [EFileType.SINGLE_PICTURE]: styles.container,
-      [EFileType.USER_PROFILE]: styles.setMultiPicture,
+      [EFileType.USER_PROFILE]: `${styles.setMultiPicture} ${styles.container}`,
       [EFileType.MULTI_PICTURE]: `${styles.setMultiPicture} ${styles.container}`,
       [EFileType.SINGLE_VIDEO]: `${styles.setSingleVideo} ${styles.container}`,
       [EFileType.IS_ONLY_TEXT]: `${styles.setOnlyText} ${styles.container}`
@@ -208,13 +209,21 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
               onFollow={() => console.log('Follow clicked')}
             />
           )}
-          <Content content={content} />
-          {image?.length === 1 && (
-            <div className={styles.singlePicture}>
-              <ImageRenderer src={image[0]} />
-            </div>
-          )}
-          <AuthorInfo author={author} comment={comment} />
+          <div className={styles.contentWrapper}>
+            <Content content={content} />
+            {image?.length === 1 && (
+              <div className={styles.profileImage}>
+                <ImageRenderer src={image[0]} />
+              </div>
+            )}
+          </div>
+          <SocialActions
+            comments={comment}
+            onShare={() => console.log('Share clicked')}
+            onLike={() => console.log('Like clicked')}
+            onStar={() => console.log('Star clicked')}
+            onComment={() => console.log('Comment clicked')}
+          />
         </div>
       )
     }
@@ -223,7 +232,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
 
   return (
     <div className={containerStyle}>
-      {fileType !== EFileType.SINGLE_PICTURE && <Content content={content} />}
+      {fileType !== EFileType.SINGLE_PICTURE && fileType !== EFileType.USER_PROFILE && <Content content={content} />}
       {renderContent}
     </div>
   )

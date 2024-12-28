@@ -1,10 +1,7 @@
 .container {
   margin: 0 auto;
-  padding: 0 16px;
+  padding: 0;
   width: 100%;
   max-width: 800px;
   box-sizing: border-box;
-  @media screen and (width <= 768px) {
-    padding: 0 8px;
-  }
 }
