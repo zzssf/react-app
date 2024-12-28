@@ -184,7 +184,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
         </div>
       ),
       [EFileType.SINGLE_VIDEO]: (
-        <div className={styles.videoContainer}>
+        <>
           <VideoPlayer
             video={video || ''}
             poster={image?.[0]}
@@ -193,7 +193,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
             defaultPoster={VIDEO_CONSTANTS.DEFAULT_POSTER}
           />
           <AuthorInfo author={author} comment={comment} />
-        </div>
+        </>
       ),
       [EFileType.IS_ONLY_TEXT]: <AuthorInfo author={author} comment={comment} />
     }

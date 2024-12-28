@@ -8,6 +8,7 @@
   overflow: hidden;
   border-radius: $border-radius-lg;
   cursor: pointer;
+  width: 100%;
 
   .videoStyle {
     @include video-base;
