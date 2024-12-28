@@ -8,6 +8,7 @@ import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 import { preloadImage } from 'src/utils/imageOptimizer'
 
+import { DislikePopup } from '../dislikePopup'
 import { SocialActions } from '../socialActions'
 import { UserProfile } from '../userProfile'
 import { VideoPlayer } from '../videoPlayer'
@@ -46,7 +47,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
           const dpr = 1 || window.devicePixelRatio
           const width = Math.round(rect.width * dpr)
           const height = Math.round(rect.height * dpr)
-          // 优化片URL
+          // 优化��URL
           const optimized = getOptimizedImageUrl(src, width, height)
           setOptimizedSrc(optimized)
         }
@@ -119,7 +120,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
           onLoad={() => setIsLoaded(true)}
           onError={() => {
             console.error('Image load error:', optimizedSrc)
-            // 如果优化的URL加载��败，回退到原始URL
+            // 如果优化的URL加载失败，回退到原始URL
             if (optimizedSrc !== src) {
               setOptimizedSrc(src)
             }
@@ -132,17 +133,29 @@ const ImageRenderer = ({ src }: { src: string }) => {
 }
 
 // 提取作者信息组件
-const AuthorInfo = ({ author, comment }: { author: string; comment: string }) => (
-  <div className={styles.otherInformation}>
-    <div>
-      <span>{author}</span>
-      <span> {comment}</span>
-    </div>
-    <div className={styles.iconContainer}>
-      <CloseOutline className={styles.icon} />
-    </div>
-  </div>
-)
+const AuthorInfo = ({ author, comment }: { author: string; comment: string }) => {
+  const [showDislike, setShowDislike] = useState(false)
+
+  const handleDislike = (category: string, item: string) => {
+    console.log('Dislike:', category, item)
+    // 这里可以添加处理不喜欢选项的逻辑
+  }
+
+  return (
+    <>
+      <div className={styles.otherInformation}>
+        <div>
+          <span>{author}</span>
+          <span> {comment}</span>
+        </div>
+        <div className={styles.iconContainer} onClick={() => setShowDislike(true)}>
+          <CloseOutline className={styles.icon} />
+        </div>
+      </div>
+      <DislikePopup visible={showDislike} onClose={() => setShowDislike(false)} onSelect={handleDislike} />
+    </>
+  )
+}
 
 // 提取内容组件
 const Content = ({ content }: { content: string }) => <div className={styles.main}>{content || ''}</div>
@@ -160,7 +173,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
     return styleMap[fileType]
   }, [fileType])
 
-  // 渲染���容
+  // 渲染内容
   const renderContent = useMemo(() => {
     const contentMap = {
       [EFileType.SINGLE_PICTURE]: (
