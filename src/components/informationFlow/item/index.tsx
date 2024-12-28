@@ -43,7 +43,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
         const rect = imageRef.current?.getBoundingClientRect()
         if (rect) {
           // 获取实际渲染尺寸，考虑设备像素比
-          const dpr = window.devicePixelRatio || 1
+          const dpr = 1 || window.devicePixelRatio
           const width = Math.round(rect.width * dpr)
           const height = Math.round(rect.height * dpr)
           // 优化片URL

@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
@@ -89,7 +89,7 @@ const generateMockData = (): ItemType[] => [
 // 模拟API调用
 const mockApi = {
   fetchData: async (start: number, end: number): Promise<ItemType[]> => {
-    await new Promise((resolve) => setTimeout(resolve, 1000))
+    await new Promise((resolve) => setTimeout(resolve, 1500))
     const mockData = generateMockData()
     return Array.from({ length: end - start }, (_, i) => ({
       ...mockData[Math.floor(Math.random() * mockData.length)],
@@ -113,6 +113,10 @@ const mockApi = {
 const List = () => {
   const [items, setItems] = useState<ItemType[]>([])
   const [hasMore, setHasMore] = useState(true)
+
+  useEffect(() => {
+    handleRefresh()
+  }, [])
 
   const handleLoadMore = async () => {
     if (items.length >= 100) {
