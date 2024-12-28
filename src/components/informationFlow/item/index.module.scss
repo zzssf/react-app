@@ -1,3 +1,6 @@
+/* stylelint-disable-next-line scss/load-partial-extension */
+@import '../../../styles/variables.scss';
+
 // 先定义变量，再使用
 $color-primary: #414143;
 $color-secondary: #969799;
@@ -165,7 +168,7 @@ $animation-duration: 0.8s;
     transition: opacity 0.2s ease;
     transform: translateZ(0);
     backface-visibility: hidden;
-    
+
     &.loaded {
       opacity: 1;
     }
@@ -256,21 +259,6 @@ $animation-duration: 0.8s;
       @include imageContainer;
       aspect-ratio: 1;
       position: relative;
-    }
-  }
-}
-
-.videoContainer {
-  @include baseContainer;
-
-  .videoStyle {
-    width: 100%;
-    max-height: $video-height-lg;
-    @media screen and (width <= 768px) {
-      max-height: $video-height-md;
-    }
-    @media screen and (width <= 480px) {
-      max-height: $video-height-sm;
     }
   }
 }

@@ -1,0 +1,15 @@
+/* stylelint-disable-next-line scss/load-partial-extension */
+@import '../../../styles/variables.scss';
+
+.videoContainer {
+  position: relative;
+  aspect-ratio: 16/9;
+  background: $color-background;
+  overflow: hidden;
+  border-radius: $border-radius-lg;
+  cursor: pointer;
+
+  .videoStyle {
+    @include video-base;
+  }
+}

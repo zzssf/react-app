@@ -1,11 +1,14 @@
-import React, { useMemo, useEffect, useRef, useState } from 'react'
+import React, { useMemo, useEffect, useRef, useState, useCallback } from 'react'
 
 import { Image } from 'antd-mobile'
 import { CloseOutline } from 'antd-mobile-icons'
 
+import { VIDEO_CONSTANTS } from 'src/constants/video'
 import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 import { preloadImage } from 'src/utils/imageOptimizer'
+
+import { VideoPlayer } from '../videoPlayer'
 
 import styles from './index.module.scss'
 
@@ -31,7 +34,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
   const [optimizedSrc, setOptimizedSrc] = useState('')
   const imageRef = useRef<HTMLDivElement>(null)
 
-  // 计算容器尺寸并优化图片URL
+  // 算容器尺寸并优化图片URL
   useEffect(() => {
     if (imageRef.current) {
       const updateImageSize = () => {
@@ -41,7 +44,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
           const dpr = window.devicePixelRatio || 1
           const width = Math.round(rect.width * dpr)
           const height = Math.round(rect.height * dpr)
-          // 优化图片URL
+          // 优化��片URL
           const optimized = getOptimizedImageUrl(src, width, height)
           setOptimizedSrc(optimized)
         }
@@ -182,9 +185,13 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
       ),
       [EFileType.SINGLE_VIDEO]: (
         <div className={styles.videoContainer}>
-          <video controls className={styles.videoStyle}>
-            <source src={video || ''} type="video/mp4" />
-          </video>
+          <VideoPlayer
+            video={video || ''}
+            poster={image?.[0]}
+            playCount={VIDEO_CONSTANTS.DEFAULT_PLAY_COUNT}
+            duration={VIDEO_CONSTANTS.DEFAULT_DURATION}
+            defaultPoster={VIDEO_CONSTANTS.DEFAULT_POSTER}
+          />
           <AuthorInfo author={author} comment={comment} />
         </div>
       ),

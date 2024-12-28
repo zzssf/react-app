@@ -1,46 +1,59 @@
-# Getting Started with Create React App
+# React Information Flow 项目
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+一个基于 React + TypeScript 的信息流组件，实现了类似小红书等社交媒体的信息流展示功能。
 
-## Available Scripts
+## 功能特性
 
-In the project directory, you can run:
+### 1. 信息流展示
 
-### `npm start`
+- 支持多种内容类型：
+  - 单图文
+  - 多图文
+  - 纯文本
+  - 视频内容
+- 自适应布局，支持 PC 和移动端
+- 图文内容优化排版
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+### 2. 图片加载优化
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+- 智能图片预加载
+- 基于视口的懒加载
+- 自动优化图片尺寸
+- 加载占位和平滑过渡
+- 失败重试和降级处理
 
-### `npm test`
+### 3. 交互体验
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+- 下拉刷新
+- 上拉加载更多
+- 流畅的动画效果
+- 骨架屏加载
 
-### `npm run build`
+## 技术实现
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+### 核心组件
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+#### 1. VirtualScroll 组件
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+- 实现虚拟滚动
+- 处理下拉刷新
+- 处理上拉加载
+- 优化滚动性能
 
-### `npm run eject`
+#### 2. Item 组件
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+- 内容渲染逻辑
+- 图片优化处理
+- 布局适配
+- 性能优化
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+#### 3. ImageRenderer 组件
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- 智能图片加载
+- 尺寸优化
+- 预加载策略
+- 错误处理
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+### 性能优化
 
-## Learn More
-
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
-
-To learn React, check out the [React documentation](https://reactjs.org/).
+#### 1. 图片加载优化
