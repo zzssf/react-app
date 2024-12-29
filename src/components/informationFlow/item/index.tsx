@@ -4,6 +4,7 @@ import { Image } from 'antd-mobile'
 import { CloseOutline } from 'antd-mobile-icons'
 
 import { VIDEO_CONSTANTS } from 'src/constants/video'
+import { useDislike } from 'src/hooks/useDislike'
 import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 import { preloadImage } from 'src/utils/imageOptimizer'
@@ -134,12 +135,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
 
 // 提取作者信息组件
 const AuthorInfo = ({ author, comment }: { author: string; comment: string }) => {
-  const [showDislike, setShowDislike] = useState(false)
-
-  const handleDislike = (category: string, item: string) => {
-    console.log('Dislike:', category, item)
-    // 这里可以添加处理不喜欢选项的逻辑
-  }
+  const { showDislike, setShowDislike, handleDislike, handleClose } = useDislike()
 
   return (
     <>
@@ -152,7 +148,7 @@ const AuthorInfo = ({ author, comment }: { author: string; comment: string }) =>
           <CloseOutline className={styles.icon} />
         </div>
       </div>
-      <DislikePopup visible={showDislike} onClose={() => setShowDislike(false)} onSelect={handleDislike} />
+      <DislikePopup visible={showDislike} onClose={handleClose} onSelect={handleDislike} />
     </>
   )
 }
