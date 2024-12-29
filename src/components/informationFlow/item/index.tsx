@@ -251,7 +251,7 @@ const Item: React.FC<ItemType> = ({
 
   return (
     <div className={containerStyle}>
-      {fileType !== EFileType.SINGLE_PICTURE && fileType !== EFileType.USER_PROFILE && <Content content={content} />}
+      {![EFileType.USER_PROFILE, EFileType.SINGLE_PICTURE].includes(fileType) && <Content content={content} />}
       {renderContent}
     </div>
   )
