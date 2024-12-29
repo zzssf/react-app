@@ -160,7 +160,16 @@ const AuthorInfo = ({ author, comment }: { author: string; comment: string }) =>
 // 提取内容组件
 const Content = ({ content }: { content: string }) => <div className={styles.main}>{content || ''}</div>
 
-const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileType, video, userProfile }) => {
+const Item: React.FC<ItemType> = ({
+  content,
+  comment,
+  author,
+  image = [],
+  fileType,
+  video,
+  userProfile,
+  publishTime
+}) => {
   // 获取容器样式
   const containerStyle = useMemo(() => {
     const styleMap = {
@@ -218,6 +227,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
             <UserProfile
               avatar={userProfile.avatar}
               nickname={userProfile.nickname}
+              publishTime={publishTime}
               isFollowed={userProfile.isFollowed}
               onFollow={() => console.log('Follow clicked')}
             />
@@ -237,7 +247,7 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
       )
     }
     return contentMap[fileType]
-  }, [fileType, image, author, comment, content, video, userProfile])
+  }, [fileType, image, author, comment, content, video, userProfile, publishTime])
 
   return (
     <div className={containerStyle}>

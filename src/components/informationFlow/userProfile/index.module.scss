@@ -17,10 +17,21 @@
       object-fit: cover;
     }
 
-    .nickname {
-      font-size: $font-size-md;
-      color: $color-primary;
-      font-weight: 500;
+    .userMeta {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+
+      .nickname {
+        font-size: $font-size-md;
+        color: $color-primary;
+        font-weight: 500;
+      }
+
+      .publishTime {
+        font-size: $font-size-sm;
+        color: $color-secondary;
+      }
     }
   }
 
