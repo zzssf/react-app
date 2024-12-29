@@ -47,7 +47,7 @@ const ImageRenderer = ({ src }: { src: string }) => {
           const dpr = 1 || window.devicePixelRatio
           const width = Math.round(rect.width * dpr)
           const height = Math.round(rect.height * dpr)
-          // 优化��URL
+          // 优化URL
           const optimized = getOptimizedImageUrl(src, width, height)
           setOptimizedSrc(optimized)
         }
@@ -189,9 +189,9 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
       ),
       [EFileType.MULTI_PICTURE]: (
         <div className={styles.multiPicture}>
-          <div className={styles.pictures}>
+          <div className={image?.length === 1 ? styles.singleImageWrapper : styles.pictures}>
             {image?.map((url, index) => (
-              <div key={index}>
+              <div key={`${url}_${index}`} className={styles.imageItem}>
                 <ImageRenderer src={url} />
               </div>
             ))}
@@ -224,11 +224,13 @@ const Item: React.FC<ItemType> = ({ content, comment, author, image = [], fileTy
           )}
           <div className={styles.contentWrapper}>
             <Content content={content} />
-            {image?.length === 1 && (
-              <div className={styles.profileImage}>
-                <ImageRenderer src={image[0]} />
-              </div>
-            )}
+            <div className={image?.length === 1 ? styles.singleImageWrapper : styles.multiImageWrapper}>
+              {image?.map((url, index) => (
+                <div key={`${url}_${index}`} className={styles.imageItem}>
+                  <ImageRenderer src={url} />
+                </div>
+              ))}
+            </div>
           </div>
           <SocialActions likes="190" stars="392" comments={comment} />
         </>

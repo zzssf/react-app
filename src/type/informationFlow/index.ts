@@ -13,4 +13,5 @@ export interface ItemType {
     nickname: string
     isFollowed?: boolean
   }
+  publishTime?: string
 }

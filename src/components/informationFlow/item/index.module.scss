@@ -40,6 +40,9 @@
   will-change: transform, opacity;
   transform: translateZ(0);
   backface-visibility: hidden;
+  border-radius: $border-radius-lg;
+  overflow: hidden;
+  background: $color-background;
 
   .actualImage {
     @include absolute-full;
@@ -47,6 +50,7 @@
     transition: opacity 0.2s ease;
     transform: translateZ(0);
     backface-visibility: hidden;
+    border-radius: $border-radius-lg;
 
     &.loaded {
       opacity: 1;
@@ -63,6 +67,7 @@
           height: 100%;
           object-fit: cover;
           transform: translateZ(0);
+          border-radius: $border-radius-lg;
         }
       }
     }
@@ -74,6 +79,8 @@
   @include flex-center;
   background: $color-background;
   transform: translateZ(0);
+  border-radius: $border-radius-lg;
+  overflow: hidden;
 
   &::after {
     border: 2px solid $color-loading-border;
@@ -130,14 +137,30 @@
 .multiPicture {
   @include base-container;
 
+  // 单图布局
+  .singleImageWrapper {
+    width: 50%;
+    margin-bottom: $spacing-sm;
+
+    .imageItem {
+      @include image-container;
+      aspect-ratio: 4/3;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
+    }
+  }
+
+  // 多图布局
   .pictures {
     @include image-grid;
     margin-bottom: $spacing-sm;
 
-    > div {
+    .imageItem {
       @include image-container;
       aspect-ratio: 1;
       position: relative;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
     }
   }
 }
@@ -201,25 +224,32 @@
     line-height: 1.5;
   }
 
-  .profileImage {
-    @include image-container;
+  // 单图布局
+  .singleImageWrapper {
     width: 50%;
-    padding-bottom: 37.5%;
-    border-radius: $border-radius-lg;
-    overflow: hidden;
+    margin-top: $gap-xs;
 
-    .imageWrapper {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
+    .imageItem {
+      @include image-container;
+      aspect-ratio: 4/3;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
+    }
+  }
 
-      .actualImage {
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-      }
+  // 多图布局
+  .multiImageWrapper {
+    @include base-container;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: $spacing-xs;
+    margin-top: $gap-xs;
+
+    .imageItem {
+      @include image-container;
+      aspect-ratio: 1;
+      border-radius: $border-radius-lg;
+      overflow: hidden;
     }
   }
 }
