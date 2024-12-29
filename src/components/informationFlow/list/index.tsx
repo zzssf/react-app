@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react'
 import { EFileType } from 'src/type/enum'
 import { ItemType } from 'src/type/informationFlow'
 
+import { FloatingRefreshButton } from '../floatingRefreshButton'
 import ItemRender from '../item'
 import { VirtualScroll } from '../virtualScroll'
 
@@ -164,6 +165,7 @@ const List = () => {
         pullDownRefresh={handleRefresh}
         renderItem={(item) => <ItemRender {...item} />}
       />
+      <FloatingRefreshButton onRefresh={handleRefresh} />
     </div>
   )
 }
