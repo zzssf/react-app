@@ -2,7 +2,7 @@ import React, { useState, useRef } from 'react'
 
 import { Popup, Avatar, Input } from 'antd-mobile'
 import type { InputRef } from 'antd-mobile/es/components/input'
-import { LeftOutline, HeartOutline } from 'antd-mobile-icons'
+import { LeftOutline, HeartOutline, DownOutline } from 'antd-mobile-icons'
 
 import { CommentType } from 'src/type/comment'
 
@@ -22,33 +22,112 @@ interface CommentListProps {
 const CommentItem: React.FC<{
   comment: CommentType
   onReply: (nickname: string) => void
-}> = ({ comment, onReply }) => (
-  <div className={styles.commentItem}>
-    <div className={styles.userAvatar}>
-      <Avatar src={comment.author.avatar} />
-    </div>
-    <div className={styles.commentContent}>
-      <div className={styles.userInfo}>
-        <span className={styles.nickname}>{comment.author.nickname}</span>
-        <div className={styles.likeWrapper}>
-          <HeartOutline className={styles.likeIcon} />
-          <span className={styles.likeCount}>{comment.likes}</span>
-        </div>
+}> = ({ comment, onReply }) => {
+  const [showReplies, setShowReplies] = useState(true)
+  const [loadingMore, setLoadingMore] = useState(false)
+  const [replies, setReplies] = useState(() => comment.replies?.slice(0, 2) || [])
+  const BATCH_SIZE = 5
+
+  const remainingReplies = (comment.replies?.length || 0) - replies.length
+
+  const handleLoadMore = async () => {
+    setLoadingMore(true)
+    await new Promise((resolve) => setTimeout(resolve, 1000))
+    const currentLength = replies.length
+    const newReplies = comment.replies?.slice(currentLength, currentLength + BATCH_SIZE) || []
+    setReplies([...replies, ...newReplies])
+    setLoadingMore(false)
+  }
+
+  const handleCollapse = () => {
+    setTimeout(() => {
+      setReplies(comment.replies?.slice(0, 2) || [])
+    }, 0)
+  }
+
+  const handleExpand = () => {
+    setReplies(comment.replies?.slice(0, 2) || [])
+    setShowReplies(true)
+  }
+
+  return (
+    <div className={styles.commentItem}>
+      <div className={styles.userAvatar}>
+        <Avatar src={comment.author.avatar} />
       </div>
-      <div className={styles.text}>{comment.content}</div>
-      <div className={styles.bottomInfo}>
-        <div className={styles.actionGroup}>
-          <span className={styles.time}>{comment.publishTime}</span>
-          <span className={styles.location}>河南</span>
-          <span className={styles.more}>更多</span>
-          <span className={styles.reply} onClick={() => onReply(comment.author.nickname)}>
-            回复
-          </span>
+      <div className={styles.commentContent}>
+        <div className={styles.userInfo}>
+          <span className={styles.nickname}>{comment.author.nickname}</span>
+          <div className={styles.likeWrapper}>
+            <HeartOutline className={styles.likeIcon} />
+            <span className={styles.likeCount}>{comment.likes}</span>
+          </div>
         </div>
+        <div className={styles.text}>{comment.content}</div>
+        <div className={styles.bottomInfo}>
+          <div className={styles.actionGroup}>
+            <span className={styles.time}>{comment.publishTime}</span>
+            <span className={styles.location}>河南</span>
+            <span className={styles.more}>更多</span>
+            <span className={styles.reply} onClick={() => onReply(comment.author.nickname)}>
+              回复
+            </span>
+          </div>
+        </div>
+
+        {comment.replies && comment.replies.length > 2 && showReplies && (
+          <div className={styles.repliesWrapper}>
+            <div className={styles.replies}>
+              {replies.map((reply) => (
+                <div key={reply.id} className={styles.replyItem}>
+                  <div className={styles.replyContent}>
+                    <div className={styles.userInfo}>
+                      <div className={styles.userLeft}>
+                        <Avatar src={reply.author.avatar} className={styles.replyAvatar} />
+                        <span className={styles.replyNickname}>{reply.author.nickname}</span>
+                      </div>
+                      <div className={styles.likeWrapper}>
+                        <HeartOutline className={styles.likeIcon} />
+                        <span className={styles.likeCount}>{reply.likes}</span>
+                      </div>
+                    </div>
+                    <div className={styles.text}>{reply.content}</div>
+                    <div className={styles.bottomInfo}>
+                      <div className={styles.actionGroup}>
+                        <span className={styles.time}>{reply.publishTime}</span>
+                        <span className={styles.location}>河南</span>
+                        <span className={styles.more}>更多</span>
+                        <span className={styles.reply} onClick={() => onReply(reply.author.nickname)}>
+                          回复
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              ))}
+
+              {remainingReplies > 0 ? (
+                <div className={`${styles.loadMore} ${loadingMore ? styles.loading : ''}`} onClick={handleLoadMore}>
+                  {loadingMore ? '加载中...' : `展开${remainingReplies}条回复`}
+                </div>
+              ) : (
+                <div className={styles.collapseButton} onClick={handleCollapse}>
+                  收起回复
+                </div>
+              )}
+            </div>
+          </div>
+        )}
+
+        {comment.replies && comment.replies.length > 2 && !showReplies && (
+          <div className={styles.repliesToggle} onClick={handleExpand}>
+            <span className={styles.replyCount}>查看{comment.replies.length}条回复</span>
+          </div>
+        )}
       </div>
     </div>
-  </div>
-)
+  )
+}
 
 export const CommentList: React.FC<CommentListProps> = ({ visible, onClose, comments, originalContent }) => {
   const [replyTo, setReplyTo] = useState('')

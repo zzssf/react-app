@@ -29,7 +29,49 @@ export const SocialActions: React.FC<SocialActionsProps> = ({ likes = '190', sta
         nickname: '打劫脚底板的强盗'
       },
       publishTime: '12-10',
-      likes: 8
+      likes: 8,
+      replies: [
+        {
+          id: '1-1',
+          content: '说得对，投资需要有规划',
+          author: {
+            avatar: 'https://example.com/avatar4.jpg',
+            nickname: '投资达人'
+          },
+          publishTime: '12-10',
+          likes: 3
+        },
+        {
+          id: '1-2',
+          content: '确实是这样，我就是这么过来的',
+          author: {
+            avatar: 'https://example.com/avatar5.jpg',
+            nickname: '股市老兵'
+          },
+          publishTime: '12-10',
+          likes: 2
+        },
+        {
+          id: '1-3',
+          content: '新手要注意风险控制',
+          author: {
+            avatar: 'https://example.com/avatar6.jpg',
+            nickname: '理财专家'
+          },
+          publishTime: '12-10',
+          likes: 4
+        },
+        {
+          id: '1-4',
+          content: '分享经验很重要',
+          author: {
+            avatar: 'https://example.com/avatar7.jpg',
+            nickname: '股市新手'
+          },
+          publishTime: '12-10',
+          likes: 1
+        }
+      ]
     },
     {
       id: '2',
@@ -39,7 +81,29 @@ export const SocialActions: React.FC<SocialActionsProps> = ({ likes = '190', sta
         nickname: '50的2'
       },
       publishTime: '12-10',
-      likes: 12
+      likes: 12,
+      replies: [
+        {
+          id: '2-1',
+          content: '这三点太重要了',
+          author: {
+            avatar: 'https://example.com/avatar8.jpg',
+            nickname: '股市小白'
+          },
+          publishTime: '12-10',
+          likes: 6
+        },
+        {
+          id: '2-2',
+          content: '血的教训啊',
+          author: {
+            avatar: 'https://example.com/avatar9.jpg',
+            nickname: '投资者'
+          },
+          publishTime: '12-10',
+          likes: 5
+        }
+      ]
     },
     {
       id: '3',
@@ -49,7 +113,72 @@ export const SocialActions: React.FC<SocialActionsProps> = ({ likes = '190', sta
         nickname: 'Half sorrow.'
       },
       publishTime: '12-10',
-      likes: 5
+      likes: 5,
+      replies: [
+        {
+          id: '3-1',
+          content: '说得太对了',
+          author: {
+            avatar: 'https://example.com/avatar10.jpg',
+            nickname: '市场观察者'
+          },
+          publishTime: '12-10',
+          likes: 2
+        },
+        {
+          id: '3-2',
+          content: '散户不容易啊',
+          author: {
+            avatar: 'https://example.com/avatar11.jpg',
+            nickname: '股市老韭菜'
+          },
+          publishTime: '12-10',
+          likes: 3
+        },
+        {
+          id: '3-3',
+          content: '要学会控制风险',
+          author: {
+            avatar: 'https://example.com/avatar12.jpg',
+            nickname: '风险管理专家'
+          },
+          publishTime: '12-10',
+          likes: 4
+        }
+      ]
+    },
+    {
+      id: '4',
+      content: '投资需要耐心和智慧',
+      author: {
+        avatar: 'https://example.com/avatar13.jpg',
+        nickname: '智慧投资'
+      },
+      publishTime: '12-10',
+      likes: 15,
+      replies: [] // 测试无回复的情况
+    },
+    {
+      id: '5',
+      content: '市场有风险，投资需谨慎',
+      author: {
+        avatar: 'https://example.com/avatar14.jpg',
+        nickname: '风险提示者'
+      },
+      publishTime: '12-10',
+      likes: 7,
+      replies: [
+        {
+          id: '5-1',
+          content: '新手必看！',
+          author: {
+            avatar: 'https://example.com/avatar15.jpg',
+            nickname: '股市新人'
+          },
+          publishTime: '12-10',
+          likes: 2
+        }
+      ]
     }
   ]
 
