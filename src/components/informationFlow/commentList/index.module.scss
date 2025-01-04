@@ -124,9 +124,12 @@
             font-size: 12px;
             color: #999;
 
-            .time, .location, .more, .reply {
+            .time,
+            .location,
+            .more,
+            .reply {
               position: relative;
-              
+
               &:not(:last-child)::after {
                 content: '';
                 position: absolute;
@@ -166,10 +169,15 @@
     }
 
     .sendButton {
-      color: $color-font-blued;
+      color: #999;
       font-size: $font-size-sm;
       cursor: pointer;
       padding: $gap-xs $spacing-sm;
+      transition: color 0.2s ease;
+
+      &.active {
+        color: $color-font-blued;
+      }
     }
   }
 }
@@ -303,4 +311,3 @@
     }
   }
 }
-

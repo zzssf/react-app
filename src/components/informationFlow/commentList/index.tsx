@@ -1,6 +1,7 @@
-import React from 'react'
+import React, { useState, useRef } from 'react'
 
 import { Popup, Avatar, Input } from 'antd-mobile'
+import type { InputRef } from 'antd-mobile/es/components/input'
 import { LeftOutline, HeartOutline } from 'antd-mobile-icons'
 
 import { CommentType } from 'src/type/comment'
@@ -18,7 +19,10 @@ interface CommentListProps {
   }
 }
 
-const CommentItem: React.FC<{ comment: CommentType }> = ({ comment }) => (
+const CommentItem: React.FC<{
+  comment: CommentType
+  onReply: (nickname: string) => void
+}> = ({ comment, onReply }) => (
   <div className={styles.commentItem}>
     <div className={styles.userAvatar}>
       <Avatar src={comment.author.avatar} />
@@ -37,7 +41,9 @@ const CommentItem: React.FC<{ comment: CommentType }> = ({ comment }) => (
           <span className={styles.time}>{comment.publishTime}</span>
           <span className={styles.location}>河南</span>
           <span className={styles.more}>更多</span>
-          <span className={styles.reply}>回复</span>
+          <span className={styles.reply} onClick={() => onReply(comment.author.nickname)}>
+            回复
+          </span>
         </div>
       </div>
     </div>
@@ -45,6 +51,27 @@ const CommentItem: React.FC<{ comment: CommentType }> = ({ comment }) => (
 )
 
 export const CommentList: React.FC<CommentListProps> = ({ visible, onClose, comments, originalContent }) => {
+  const [replyTo, setReplyTo] = useState('')
+  const inputRef = useRef<InputRef>(null)
+  const [inputValue, setInputValue] = useState('')
+
+  const handleReply = (nickname: string) => {
+    setReplyTo(nickname)
+    // 延迟聚焦，确保键盘能正常弹出
+    setTimeout(() => {
+      inputRef.current?.focus()
+    }, 100)
+  }
+
+  const handleSend = () => {
+    if (inputValue) {
+      console.log('发送回复:', { replyTo, content: inputValue })
+      // 这里可以添加发送回复的逻辑
+      setInputValue('')
+      setReplyTo('')
+    }
+  }
+
   return (
     <Popup
       visible={visible}
@@ -91,15 +118,23 @@ export const CommentList: React.FC<CommentListProps> = ({ visible, onClose, comm
 
         <div className={styles.commentList}>
           {comments.map((comment) => (
-            <CommentItem key={comment.id} comment={comment} />
+            <CommentItem key={comment.id} comment={comment} onReply={handleReply} />
           ))}
         </div>
 
         <div className={styles.inputBar}>
           <div className={styles.inputWrapper}>
-            <Input placeholder="说点什么..." />
+            <Input
+              ref={inputRef}
+              value={inputValue}
+              onChange={setInputValue}
+              placeholder={replyTo ? `回复 ${replyTo}` : '说点什么...'}
+              onBlur={() => setReplyTo('')}
+            />
           </div>
-          <div className={styles.sendButton}>发送</div>
+          <div className={`${styles.sendButton} ${inputValue ? styles.active : ''}`} onClick={handleSend}>
+            发送
+          </div>
         </div>
       </div>
     </Popup>
