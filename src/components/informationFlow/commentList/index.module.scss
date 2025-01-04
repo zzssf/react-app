@@ -1,0 +1,306 @@
+/* stylelint-disable-next-line scss/load-partial-extension */
+@import '../../../styles/variables.scss';
+
+.commentPopup {
+  :global {
+    .adm-popup-body {
+      background: $color-white;
+    }
+  }
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  background: $color-white;
+
+  .header {
+    position: relative;
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-bottom: 1px solid $color-border;
+
+    .back {
+      position: absolute;
+      left: $spacing-md;
+      padding: $gap-xs;
+      cursor: pointer;
+      color: $color-secondary;
+    }
+
+    .title {
+      font-size: $font-size-md;
+      font-weight: 500;
+      color: $color-primary;
+    }
+
+    .share {
+      position: absolute;
+      right: $spacing-md;
+      padding: $gap-xs;
+      cursor: pointer;
+      color: $color-secondary;
+
+      > svg {
+        width: 16px;
+        height: 16px;
+        font-size: 16px;
+      }
+    }
+  }
+
+  .commentList {
+    flex: 1;
+    overflow-y: auto;
+    padding: $spacing-md;
+
+    .commentItem {
+      display: flex;
+      padding: $spacing-md;
+      border-bottom: 1px solid $color-border;
+
+      .userAvatar {
+        margin-right: $spacing-sm;
+        flex-shrink: 0;
+
+        :global {
+          .adm-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+          }
+        }
+      }
+
+      .commentContent {
+        flex: 1;
+        min-width: 0;
+
+        .userInfo {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-start;
+          margin-bottom: $gap-xs;
+
+          .nickname {
+            font-size: 14px;
+            color: #333;
+            font-weight: normal;
+          }
+
+          .likeWrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 2px;
+
+            .likeIcon {
+              font-size: 14px;
+              color: #999;
+            }
+
+            .likeCount {
+              font-size: 12px;
+              color: #999;
+            }
+          }
+        }
+
+        .text {
+          font-size: 14px;
+          color: #333;
+          line-height: 1.4;
+          margin-bottom: $gap-sm;
+        }
+
+        .bottomInfo {
+          .actionGroup {
+            display: flex;
+            align-items: center;
+            gap: $gap-sm;
+            font-size: 12px;
+            color: #999;
+
+            .time, .location, .more, .reply {
+              position: relative;
+              
+              &:not(:last-child)::after {
+                content: '';
+                position: absolute;
+                right: -6px;
+                top: 50%;
+                transform: translateY(-50%);
+                width: 1px;
+                height: 10px;
+                background: #eee;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .inputBar {
+    padding: $spacing-sm;
+    border-top: 1px solid $color-border;
+    display: flex;
+    align-items: center;
+    gap: $spacing-sm;
+    background: $color-white;
+
+    .inputWrapper {
+      flex: 1;
+
+      :global {
+        .adm-input {
+          background: $color-background;
+          border-radius: 20px;
+          padding: $gap-xs $spacing-sm;
+          font-size: $font-size-sm;
+        }
+      }
+    }
+
+    .sendButton {
+      color: $color-font-blued;
+      font-size: $font-size-sm;
+      cursor: pointer;
+      padding: $gap-xs $spacing-sm;
+    }
+  }
+}
+
+.originalContent {
+  padding: $spacing-md;
+  background: $color-white;
+
+  .userInfo {
+    @include flex-between;
+    margin-bottom: $spacing-sm;
+
+    .userProfile {
+      @include flex-center;
+      gap: $gap-sm;
+
+      :global {
+        .adm-avatar {
+          width: 36px;
+          height: 36px;
+          border-radius: 50%;
+        }
+      }
+
+      .nickname {
+        font-size: $font-size-md;
+        color: $color-primary;
+        font-weight: 500;
+      }
+    }
+
+    .followButton {
+      font-size: $font-size-md;
+      color: $color-font-blued;
+      cursor: pointer;
+      text-decoration: none;
+      padding: $gap-xs $gap-sm;
+      border-radius: $border-radius-lg;
+      transition: all 0.2s ease;
+
+      &:hover {
+        background: rgba($color-font-blued, 0.1);
+      }
+    }
+  }
+
+  .title {
+    font-size: $font-size-lg;
+    font-weight: 500;
+    color: $color-primary;
+    margin-bottom: $gap-sm;
+  }
+
+  .content {
+    font-size: $font-size-md;
+    color: $color-primary;
+    margin-bottom: $gap-md;
+    white-space: pre-line;
+    line-height: 1.5;
+  }
+
+  .imageWrapper {
+    width: 50%;
+    aspect-ratio: 4/3;
+    border-radius: $border-radius-lg;
+    overflow: hidden;
+    background: $color-background;
+
+    &.multiImages {
+      width: 33.33%;
+      aspect-ratio: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+  }
+}
+
+.commentHeader {
+  padding: $spacing-sm $spacing-md;
+  border-bottom: 1px solid $color-border;
+
+  .totalComments {
+    font-size: $font-size-sm;
+    color: $color-secondary;
+  }
+}
+
+.replies {
+  margin: $gap-sm 0;
+  padding: $gap-sm;
+  background: $color-background;
+  border-radius: $border-radius-lg;
+
+  .replyItem {
+    margin-bottom: $gap-sm;
+
+    &:last-child {
+      margin-bottom: 0;
+    }
+
+    .replyHeader {
+      display: flex;
+      align-items: center;
+      gap: $gap-xs;
+      margin-bottom: $gap-xs;
+
+      .replyAvatar {
+        width: 24px;
+        height: 24px;
+      }
+
+      .replyNickname {
+        font-size: $font-size-sm;
+        color: $color-primary;
+      }
+
+      .replyTime {
+        font-size: $font-size-sm;
+        color: $color-secondary;
+      }
+    }
+
+    .replyText {
+      font-size: $font-size-sm;
+      color: $color-primary;
+      line-height: 1.5;
+    }
+  }
+}
+
