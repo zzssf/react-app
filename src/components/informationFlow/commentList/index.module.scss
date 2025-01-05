@@ -58,7 +58,7 @@
 
     .commentItem {
       display: flex;
-      padding: $spacing-md;
+      padding: $spacing-md $spacing-md 0;
       border-bottom: 1px solid $color-border;
 
       .userAvatar {
@@ -112,15 +112,19 @@
           font-size: 14px;
           color: #333;
           line-height: 1.4;
-          margin-bottom: $gap-sm;
+          margin-bottom: $gap-xs;
         }
 
         .bottomInfo {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
           .actionGroup {
             display: flex;
             align-items: center;
             gap: $gap-sm;
-            font-size: 12px;
+            font-size: 14px;
             color: #999;
 
             .time,
@@ -128,17 +132,39 @@
             .more,
             .reply {
               position: relative;
+              cursor: pointer;
 
               &:not(:last-child)::after {
                 content: '';
                 position: absolute;
-                right: -6px;
+                right: -8px;
                 top: 50%;
                 transform: translateY(-50%);
                 width: 1px;
-                height: 10px;
+                height: 12px;
                 background: #eee;
               }
+            }
+          }
+
+          .likeWrapper {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            cursor: pointer;
+            height: 20px;
+            line-height: 20px;
+
+            .likeIcon {
+              font-size: 16px;
+              color: #999;
+              display: flex;
+              align-items: center;
+            }
+
+            .likeCount {
+              font-size: 14px;
+              color: #999;
             }
           }
         }
@@ -273,7 +299,7 @@
 
   .replies {
     .replyItem {
-      margin-bottom: 8px;
+      margin-top: $spacing-xs;
 
       &:last-child {
         margin-bottom: 4px;
@@ -296,6 +322,8 @@
             .replyAvatar {
               width: 20px;
               height: 20px;
+              border-radius: 50%;
+              overflow: hidden;
             }
 
             .replyNickname {
@@ -330,11 +358,15 @@
         }
 
         .bottomInfo {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
           .actionGroup {
             display: flex;
             align-items: center;
             gap: $gap-sm;
-            font-size: 12px;
+            font-size: 14px;
             color: #999;
 
             .time,
@@ -347,12 +379,49 @@
               &:not(:last-child)::after {
                 content: '';
                 position: absolute;
-                right: -6px;
+                right: -8px;
                 top: 50%;
                 transform: translateY(-50%);
                 width: 1px;
-                height: 10px;
+                height: 12px;
                 background: #eee;
+              }
+            }
+          }
+
+          .interactionGroup {
+            display: flex;
+            align-items: center;
+            gap: 16px;
+
+            .likeWrapper,
+            .dislikeWrapper {
+              display: flex;
+              align-items: center;
+              gap: 6px;
+              cursor: pointer;
+              height: 20px;
+              line-height: 20px;
+
+              .likeIcon {
+                font-size: 16px;
+                color: #ff2442;
+                display: flex;
+                align-items: center;
+              }
+
+              .dislikeIcon {
+                font-size: 18px;
+                color: #999;
+                display: flex;
+                align-items: center;
+                transform: rotate(-10deg);
+              }
+
+              .likeCount,
+              .dislikeCount {
+                font-size: 14px;
+                color: #999;
               }
             }
           }
