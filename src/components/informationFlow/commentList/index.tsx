@@ -52,6 +52,15 @@ const CommentItem: React.FC<{
     setShowReplies(true)
   }
 
+  const [likeStates, setLikeStates] = useState<{ [key: string]: boolean }>({})
+
+  const handleLike = (id: string) => {
+    setLikeStates((prev) => ({
+      ...prev,
+      [id]: !prev[id]
+    }))
+  }
+
   return (
     <div className={styles.commentItem}>
       <div className={styles.userAvatar}>
@@ -71,9 +80,19 @@ const CommentItem: React.FC<{
               回复
             </span>
           </div>
-          <div className={styles.likeWrapper}>
-            <HeartOutline className={styles.likeIcon} />
-            <span className={styles.likeCount}>{comment.likes}</span>
+          <div className={styles.interactionGroup}>
+            <div className={styles.likeWrapper} onClick={() => handleLike(comment.id)}>
+              {comment.isLiked || likeStates[comment.id] ? (
+                <HeartFill className={`${styles.likeIcon} ${styles.active}`} />
+              ) : (
+                <HeartOutline className={styles.likeIcon} />
+              )}
+              <span className={styles.likeCount}>{comment.likes}</span>
+            </div>
+            <div className={styles.dislikeWrapper}>
+              <BrokenHeartIcon className={styles.dislikeIcon} />
+              <span className={styles.dislikeCount}>0</span>
+            </div>
           </div>
         </div>
 
@@ -100,8 +119,12 @@ const CommentItem: React.FC<{
                         </span>
                       </div>
                       <div className={styles.interactionGroup}>
-                        <div className={styles.likeWrapper}>
-                          <HeartFill className={styles.likeIcon} />
+                        <div className={styles.likeWrapper} onClick={() => handleLike(reply.id)}>
+                          {reply.isLiked || likeStates[reply.id] ? (
+                            <HeartFill className={`${styles.likeIcon} ${styles.active}`} />
+                          ) : (
+                            <HeartOutline className={styles.likeIcon} />
+                          )}
                           <span className={styles.likeCount}>{reply.likes}</span>
                         </div>
                         <div className={styles.dislikeWrapper}>

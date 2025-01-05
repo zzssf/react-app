@@ -1,6 +1,99 @@
 /* stylelint-disable-next-line scss/load-partial-extension */
 @import '../../../styles/variables.scss';
 
+// 变量定义
+$icon-size: 18px;
+$text-size: 14px;
+$small-text-size: 13px;
+$avatar-size: 36px;
+$small-avatar-size: 20px;
+$divider-color: #eee;
+$text-color: #333;
+$secondary-color: #999;
+$primary-color: #ff2442;
+
+// Mixins
+@mixin flex-align-center($gap: 0) {
+  display: flex;
+  align-items: center;
+  gap: $gap;
+}
+
+@mixin icon-style($size: 18px, $color: #999, $active-color: #ff2442) {
+  font-size: $size;
+  color: $color;
+  transition: color 0.2s ease;
+
+  &.active {
+    color: $active-color;
+  }
+}
+
+@mixin interaction-wrapper {
+  @include flex-align-center(16px);
+
+  .likeWrapper,
+  .dislikeWrapper {
+    @include flex-align-center(6px);
+    cursor: pointer;
+
+    .likeIcon {
+      @include icon-style;
+    }
+
+    .dislikeIcon {
+      @include icon-style($active-color: #999);
+    }
+
+    .likeCount,
+    .dislikeCount {
+      font-size: $text-size;
+      color: $secondary-color;
+    }
+  }
+}
+
+@mixin action-group {
+  @include flex-align-center;
+  gap: $gap-sm;
+  font-size: $text-size;
+  color: $secondary-color;
+
+  .time,
+  .location,
+  .more,
+  .reply {
+    position: relative;
+    cursor: pointer;
+
+    &:not(:last-child)::after {
+      content: '';
+      position: absolute;
+      right: -8px;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 1px;
+      height: 12px;
+      background: $divider-color;
+    }
+  }
+}
+
+@mixin bottom-info {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  .actionGroup {
+    @include action-group;
+  }
+
+  .interactionGroup {
+    @include interaction-wrapper;
+  }
+}
+
+// 组件样式
 .commentPopup {
   :global {
     .adm-popup-body {
@@ -97,7 +190,7 @@
             gap: 2px;
 
             .likeIcon {
-              font-size: 14px;
+              font-size: 18px;
               color: #999;
             }
 
@@ -116,57 +209,7 @@
         }
 
         .bottomInfo {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-          .actionGroup {
-            display: flex;
-            align-items: center;
-            gap: $gap-sm;
-            font-size: 14px;
-            color: #999;
-
-            .time,
-            .location,
-            .more,
-            .reply {
-              position: relative;
-              cursor: pointer;
-
-              &:not(:last-child)::after {
-                content: '';
-                position: absolute;
-                right: -8px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 1px;
-                height: 12px;
-                background: #eee;
-              }
-            }
-          }
-
-          .likeWrapper {
-            display: flex;
-            align-items: center;
-            gap: 6px;
-            cursor: pointer;
-            height: 20px;
-            line-height: 20px;
-
-            .likeIcon {
-              font-size: 16px;
-              color: #999;
-              display: flex;
-              align-items: center;
-            }
-
-            .likeCount {
-              font-size: 14px;
-              color: #999;
-            }
-          }
+          @include bottom-info;
         }
       }
     }
@@ -216,7 +259,7 @@
     margin-bottom: $spacing-sm;
 
     .userProfile {
-      @include flex-center;
+      @include flex-align-center;
       gap: $gap-sm;
 
       :global {
@@ -332,21 +375,8 @@
             }
           }
 
-          .likeWrapper {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            gap: 2px;
-
-            .likeIcon {
-              font-size: 14px;
-              color: #999;
-            }
-
-            .likeCount {
-              font-size: 12px;
-              color: #999;
-            }
+          .interactionGroup {
+            @include interaction-wrapper;
           }
         }
 
@@ -358,72 +388,7 @@
         }
 
         .bottomInfo {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-
-          .actionGroup {
-            display: flex;
-            align-items: center;
-            gap: $gap-sm;
-            font-size: 14px;
-            color: #999;
-
-            .time,
-            .location,
-            .more,
-            .reply {
-              position: relative;
-              cursor: pointer;
-
-              &:not(:last-child)::after {
-                content: '';
-                position: absolute;
-                right: -8px;
-                top: 50%;
-                transform: translateY(-50%);
-                width: 1px;
-                height: 12px;
-                background: #eee;
-              }
-            }
-          }
-
-          .interactionGroup {
-            display: flex;
-            align-items: center;
-            gap: 16px;
-
-            .likeWrapper,
-            .dislikeWrapper {
-              display: flex;
-              align-items: center;
-              gap: 6px;
-              cursor: pointer;
-              height: 20px;
-              line-height: 20px;
-
-              .likeIcon {
-                font-size: 18px;
-                color: #ff2442;
-                display: flex;
-                align-items: center;
-              }
-
-              .dislikeIcon {
-                font-size: 18px;
-                color: #999;
-                display: flex;
-                align-items: center;
-              }
-
-              .likeCount,
-              .dislikeCount {
-                font-size: 14px;
-                color: #999;
-              }
-            }
-          }
+          @include bottom-info;
         }
       }
     }
@@ -449,26 +414,4 @@
   font-size: $font-size-sm;
   cursor: pointer;
   padding: 4px 0;
-}
-
-.interactionGroup {
-  .likeWrapper,
-  .dislikeWrapper {
-    cursor: pointer;
-
-    .likeIcon,
-    .dislikeIcon {
-      transition: transform 0.2s;
-
-      &:hover {
-        transform: scale(1.1);
-      }
-    }
-
-    .dislikeIcon {
-      &.active {
-        color: #999;
-      }
-    }
-  }
 }

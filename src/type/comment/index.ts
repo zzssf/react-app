@@ -7,5 +7,6 @@ export interface CommentType {
   }
   publishTime: string
   likes: number
+  isLiked?: boolean
   replies?: CommentType[]
 }
