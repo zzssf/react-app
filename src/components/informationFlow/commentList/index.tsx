@@ -6,6 +6,8 @@ import { LeftOutline, HeartOutline, HeartFill } from 'antd-mobile-icons'
 
 import { CommentType } from 'src/type/comment'
 
+import BrokenHeartIcon from '../../icons/BrokenHeartIcon'
+
 import styles from './index.module.scss'
 
 interface CommentListProps {
@@ -18,19 +20,6 @@ interface CommentListProps {
     images?: string[]
   }
 }
-
-// 添加 SVGProps 类型
-const BrokenHeartIcon: React.FC<SVGProps<SVGSVGElement>> = (props) => (
-  <svg
-    width="1em"
-    height="1em"
-    viewBox="0 0 24 24"
-    fill="currentColor"
-    {...props} // 传递所有 props，包括 className
-  >
-    <path d="M12.2 21.2c-.3 0-.5-.1-.7-.3L4 14.5c-2.7-2.3-3.2-6.5-.9-9.3C4.3 3.5 6.3 2.5 8.4 2.5c1.5 0 2.9.5 4.1 1.4.2.1.3.2.5.2.1 0 .3-.1.4-.2 1.2-.9 2.6-1.4 4.1-1.4 2.1 0 4.1 1 5.3 2.7 2.2 2.8 1.8 7-.9 9.3l-1.9 1.7.4-2.5c.1-.4-.2-.8-.6-.9-.4-.1-.8.2-.9.6l-.8 4.5c0 .2 0 .4.1.6.2.3.5.5.9.5l4.5-.8c.4-.1.7-.5.6-.9-.1-.4-.5-.7-.9-.6l-2.5.4 1.5-1.3c3.2-2.7 3.6-7.6.9-10.8C20.7 2.9 18.3 1.7 16 1.7c-1.7 0-3.4.6-4.7 1.6-.3.2-.6.3-1 .3-.3 0-.7-.1-1-.3-1.3-1-3-1.6-4.7-1.6-2.4 0-4.7 1.2-6.1 3.1C-4 8 -3.5 12.9-.3 15.6l7.5 6.4c.4.3.9.3 1.3 0l2.5-2.1c.3-.3.4-.7.1-1.1-.3-.3-.7-.4-1.1-.1l-1.8 1.6-6.8-5.8c-2.7-2.3-3-6.3-.7-8.9C2.6 4 4.5 3 6.4 3c1.3 0 2.6.4 3.6 1.2.6.4 1.3.7 2 .7.7 0 1.4-.2 2-.7 1.1-.8 2.3-1.2 3.6-1.2 1.9 0 3.8 1 4.9 2.6 2.3 2.6 2 6.6-.7 8.9l-9 7.7c-.2.2-.4.3-.6.3z" />
-  </svg>
-)
 
 const CommentItem: React.FC<{
   comment: CommentType
